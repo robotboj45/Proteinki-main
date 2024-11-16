@@ -1,4 +1,4 @@
-<?php 
+<?php
 session_start();
 include("backend/connection.php");
 
@@ -47,7 +47,7 @@ if (!$con) {
                             while($row = mysqli_fetch_assoc($categories_result)) {
                                 $category_id = htmlspecialchars($row['id']);
                                 $category_name = htmlspecialchars($row['name']);
-                                echo '<li><a class="dropdown-item" href="categories.php?id='.$category_id.'">'.$category_name.'</a></li>';
+                                echo '<li><a class="dropdown-item" href="categories/'.$category_name.'.php">'.$category_name.'</a></li>';
                             }
                         } else {
                             echo '<li><a class="dropdown-item disabled" href="#">Brak kategorii</a></li>';
@@ -110,7 +110,7 @@ if (!$con) {
                     $product_id = (int)$product['id'];
                     $product_name = htmlspecialchars($product['name']);
                     $product_price = number_format($product['price'], 2, ',', ' ');
-                    
+
                     // Sprawdzamy, czy istnieje zdjęcie w bazie danych
                     if (!empty($product['image_path'])) {
                         // Zamieniamy dane binarne na base64
