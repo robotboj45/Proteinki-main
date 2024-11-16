@@ -68,7 +68,7 @@ if (!$con) {
                     $sql = "SELECT products.id, products.name, categories.name AS category_name, products.price 
                             FROM products
                             JOIN categories ON products.category_id = categories.id";
-                    $result = $conn->query($sql);
+                    $result = $con->query($sql);
 
                     // Wyświetlenie produktów
                     if ($result->num_rows > 0) {
@@ -89,12 +89,13 @@ if (!$con) {
                     }
 
                     // Zamknięcie połączenia z bazą
-                    $conn->close();
+                    $con->close();
                     ?>
                 </tbody>
             </table>
         </div>
-        <a href="add_product.html" class="btn btn-success mt-4">Dodaj Nowy Produkt</a>
+        <a href="add_product.php" class="btn btn-success mt-4">Dodaj Nowy Produkt</a>
+        <a href="dashboard.html" class="btn btn-success mt-4">Powrót</a>
     </div>
 </section>
 
