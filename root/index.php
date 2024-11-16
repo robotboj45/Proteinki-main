@@ -92,11 +92,7 @@ if (!$con) {
         <h2 class="text-center mb-4">Nowości</h2>
         <div class="row g-4">
             <?php
-            // Połączenie z bazą danych
-            $con = mysqli_connect("localhost", "root", "", "proteinki_db");
-            if (!$con) {
-                die("Błąd połączenia z bazą danych: " . mysqli_connect_error());
-            }
+        
 
             $products_query = "
                 SELECT p.*, i.image_path 
@@ -124,11 +120,15 @@ if (!$con) {
                     echo '
                     <div class="col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm border-0">
-                            <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
+                            <a href="products/product.php?id='. $product_id .'">
+    <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
+</a>
                             <div class="card-body text-center">
-                                <h5 class="card-title">'. $product_name .'</h5>
+                                <h5 class="card-title">
+    <a href="products/product.php?id='. $product_id .'" class="text-dark text-decoration-none">'. $product_name .'</a>
+</h5>
                                 <p class="card-text">'. $product_price .' zł</p>
-                                <a href="product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
+                                <a href="products/product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
                             </div>
                         </div>
                     </div>';
