@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Witaminy - Sklep z Suplementami</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../scripts/filterProducts.js" defer></script>
+</head>
+<body>
+    <header class="bg-dark text-white py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <img src="../img/logo.png" alt="Logo Sklepu" class="logo">
+            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Offcanvas Navbar (Boczny pasek nawigacji) -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.html">Strona główna</a></li>
+                <li class="nav-item"><a class="nav-link" href="protein.html">Białka</a></li>
+                <li class="nav-item"><a class="nav-link" href="creatine.html">Kreatyna</a></li>
+                <li class="nav-item"><a class="nav-link" href="dietary-food.html">Żywność dietetyczna</a></li>
+                <li class="nav-item"><a class="nav-link" href="vitamins.html">Witaminy</a></li>
+                <li class="nav-item"><a class="nav-link" href="../contact/contact.html">Kontakt</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <section class="py-5">
+        <div class="container">
+            <h2 class="text-center mb-4">Witaminy</h2>
+
+            <!-- Sekcja wyszukiwania i filtrowania -->
+            <div class="row mb-4">
+                <div class="col-md-6">
+                    <input type="text" id="searchInput" class="form-control" placeholder="Szukaj produktów..." onkeyup="filterProducts()">
+                </div>
+                <div class="col-md-6">
+                    <select id="filterSelect" class="form-select" onchange="filterProducts()">
+                        <option value="all">Wszystkie</option>
+                        <option value="witamina-d">Witamina D</option>
+                        <option value="witamina-c">Witamina C</option>
+                        <option value="multiwitamina">Multiwitamina</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="row g-4" id="productList">
+                <!-- Przykładowe produkty -->
+                <div class="col-md-6 col-lg-4 product-card witamina-d">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="../img/products/product3.jpg" class="card-img-top" alt="Witaminy D3 + K2">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Witaminy D3 + K2</h5>
+                            <p class="card-text">59,99 zł</p>
+                            <a href="../products/product3.html" class="btn btn-outline-primary">Zobacz więcej</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 product-card witamina-c">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="../img/products/vitamin-c.jpg" class="card-img-top" alt="Witamina C 1000 mg">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Witamina C 1000 mg</h5>
+                            <p class="card-text">34,99 zł</p>
+                            <a href="../products/vitamin-c.html" class="btn btn-outline-primary">Zobacz więcej</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4 product-card multiwitamina">
+                    <div class="card h-100 shadow-sm border-0">
+                        <img src="../img/products/multivitamin.jpg" class="card-img-top" alt="Multiwitamina Kompleks">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Multiwitamina Kompleks</h5>
+                            <p class="card-text">79,99 zł</p>
+                            <a href="../products/multivitamin.html" class="btn btn-outline-primary">Zobacz więcej</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-dark text-white py-5">
+        <div class="container text-center">
+            <p>&copy; 2024 Sklep z Suplementami. Wszelkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script src="../js/filterProducts.js"></script>
+</body>
+</html>
