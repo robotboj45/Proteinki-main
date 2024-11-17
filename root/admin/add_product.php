@@ -1,6 +1,28 @@
 <?php
 include('../backend/connection.php');
 
+if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    $product_name = mysqli_real_escape_string($con, $_POST['name']);
+    $product_description = mysqli_real_escape_string($con, $_POST['description']);
+    $product_price = mysqli_real_escape_string($con, $_POST['price']);
+    $category = mysqli_real_escape_string($con, $_POST['category_id']);
+
+    if (!empty($product_name) && !empty($product_description) && !empty($product_price) && !empty($category)) {
+        $query = "INSERT INTO products (name, description, price, category_id) VALUES (?, ?, ?, ?)";
+        $stmt = mysqli_prepare($con, $query);
+        mysqli_stmt_bind_param($stmt, "ssdi", $product_name, $product_description, $product_price, $category);
+        
+        if (mysqli_stmt_execute($stmt)) {
+            echo "Produkt dodany pomyślnie!";
+        } else {
+            echo "Błąd: " . mysqli_error($con);
+        }
+
+        mysqli_stmt_close($stmt);
+    } else {
+        echo "Proszę wypełnić wszystkie wymagane pola!";
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +75,7 @@ include('../backend/connection.php');
                     <label for="description" class="form-label">Opis produktu:</label>
                     <textarea id="description" name="description" class="form-control" rows="4" required></textarea>
                 </div>
-
+            
                 <div class="mb-3">
                     <label for="price" class="form-label">Cena produktu (w zł):</label>
                     <input type="number" id="price" name="price" step="0.01" class="form-control" required>
@@ -66,8 +88,8 @@ include('../backend/connection.php');
                         <?php
                         $categories_query = "SELECT id, name FROM categories ORDER BY name";
                         $categories_result = mysqli_query($con, $categories_query);
-                        while($row = mysqli_fetch_assoc($categories_result)) {
-                            echo '<option value="'.htmlspecialchars($row['id']).'">'.htmlspecialchars($row['name']).'</option>';
+                        while ($row = mysqli_fetch_assoc($categories_result)) {
+                            echo '<option value="' . htmlspecialchars($row['id']) . '">' . htmlspecialchars($row['name']) . '</option>';
                         }
                         ?>
                     </select>
