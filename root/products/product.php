@@ -6,7 +6,6 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
-// Pobranie szczegółów produktu na podstawie ID
 $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $product_query = "SELECT p.*, i.image_path, c.name AS category_name 
                   FROM products p
@@ -79,7 +78,7 @@ if (!$product) {
                         <?php echo number_format($product['price'], 2, ',', ' ') . ' zł'; ?>
                     </p>
                     <p><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
-                    <a href="../checkout/cart.php?add=<?php echo $product['id']; ?>" class="btn btn-primary mt-3">Dodaj do koszyka</a>
+                    <a href="../checkout/cart.php?action=add&id=<?php echo $product['id']; ?>" class="btn btn-primary mt-3">Dodaj do koszyka</a>
                 </div>
             </div>
         </div>
