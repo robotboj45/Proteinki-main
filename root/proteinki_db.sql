@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Lis 16, 2024 at 10:24 AM
--- Wersja serwera: 10.4.28-MariaDB
--- Wersja PHP: 8.2.4
+-- Generation Time: Lis 16, 2024 at 10:46 PM
+-- Wersja serwera: 10.4.32-MariaDB
+-- Wersja PHP: 8.2.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -100,6 +100,63 @@ INSERT INTO `imagesproduct` (`id`, `product_id`, `image_path`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla tabeli `orders`
+--
+
+CREATE TABLE `orders` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `first_name` varchar(50) NOT NULL,
+  `last_name` varchar(50) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `phone` varchar(20) NOT NULL,
+  `voivodeship` varchar(50) NOT NULL,
+  `postal_code` varchar(6) NOT NULL,
+  `city` varchar(100) NOT NULL,
+  `street` varchar(100) NOT NULL,
+  `house_number` varchar(10) NOT NULL,
+  `apartment_number` varchar(10) DEFAULT NULL,
+  `shipping_method` enum('Inpost','DPD','DHL','Poczta Polska') NOT NULL,
+  `payment_method` enum('przelew','karta','paypal','za_pobraniem') NOT NULL,
+  `consent_data` tinyint(1) NOT NULL DEFAULT 0,
+  `consent_terms` tinyint(1) NOT NULL DEFAULT 0,
+  `total` decimal(10,2) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `status` enum('Oczekujące','W realizacji','Wysłane','Zakończone','Anulowane') NOT NULL DEFAULT 'Oczekujące',
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `orders`
+--
+
+INSERT INTO `orders` (`id`, `first_name`, `last_name`, `email`, `phone`, `voivodeship`, `postal_code`, `city`, `street`, `house_number`, `apartment_number`, `shipping_method`, `payment_method`, `consent_data`, `consent_terms`, `total`, `created_at`, `status`, `updated_at`) VALUES
+(6, 'Paweł', 'Giełota', 'pawelgielota@gmail.com', '+48 111 222 333', 'opolskie', '45-211', 'Opole', 'Grota Roweckiego', '9', '', 'DPD', '', 1, 1, 89.00, '2024-11-16 21:24:00', 'Oczekujące', '2024-11-16 21:24:00');
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `order_product`
+--
+
+CREATE TABLE `order_product` (
+  `id` int(10) UNSIGNED NOT NULL,
+  `order_id` int(10) UNSIGNED NOT NULL,
+  `product_id` int(10) UNSIGNED NOT NULL,
+  `product_name` varchar(100) NOT NULL,
+  `price` decimal(10,2) NOT NULL,
+  `quantity` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `order_product`
+--
+
+INSERT INTO `order_product` (`id`, `order_id`, `product_id`, `product_name`, `price`, `quantity`) VALUES
+(6, 6, 40, 'Creatine HCL 300g', 89.00, 1);
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla tabeli `products`
 --
 
@@ -170,6 +227,19 @@ ALTER TABLE `imagesproduct`
   ADD KEY `product_id` (`product_id`);
 
 --
+-- Indeksy dla tabeli `orders`
+--
+ALTER TABLE `orders`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indeksy dla tabeli `order_product`
+--
+ALTER TABLE `order_product`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `order_id` (`order_id`);
+
+--
 -- Indeksy dla tabeli `products`
 --
 ALTER TABLE `products`
@@ -201,6 +271,18 @@ ALTER TABLE `imagesproduct`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
+-- AUTO_INCREMENT for table `orders`
+--
+ALTER TABLE `orders`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
+-- AUTO_INCREMENT for table `order_product`
+--
+ALTER TABLE `order_product`
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+
+--
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
@@ -221,6 +303,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `imagesproduct`
   ADD CONSTRAINT `imagesproduct_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `order_product`
+--
+ALTER TABLE `order_product`
+  ADD CONSTRAINT `order_product_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
