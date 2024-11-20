@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Lis 16, 2024 at 10:46 PM
--- Wersja serwera: 10.4.32-MariaDB
--- Wersja PHP: 8.2.12
+-- Generation Time: Lis 20, 2024 at 06:13 PM
+-- Wersja serwera: 10.4.28-MariaDB
+-- Wersja PHP: 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -204,10 +204,22 @@ CREATE TABLE `users` (
   `user_name` varchar(100) NOT NULL,
   `password` varchar(100) NOT NULL,
   `date` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
-  `user_group` int(11) NOT NULL,
+  `user_group` enum('admin','user') NOT NULL DEFAULT 'user',
   `mobile` varchar(20) NOT NULL,
-  `email` varchar(50) NOT NULL
+  `user_email` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`id`, `user_id`, `user_name`, `password`, `date`, `user_group`, `mobile`, `user_email`) VALUES
+(2, 88902639155769144, 'user', '$2y$10$wchT9wocQQkMWbDd/YmzROBnpj3/KqE7AXqfeRKx8u7Hb/..YxWVm', '2024-11-20 16:05:07', 'user', '999888555', 'admin@example.com'),
+(3, 20535359836825911, 'user', '$2y$10$Pq7DT1v.oo3aJtaGnzt8Re18jxsNmGMqwc7s09SYY9wyjiTm9TvMO', '2024-11-20 16:05:07', 'user', '234324234', 'admin12@example.com'),
+(4, 96348417, 'fds', '$2y$10$oKQPpRJSMOzKK7t5QwCiXO.RDAhXo/k/AB7CqPPn9CIHUcOLuNlh.', '2024-11-20 16:05:07', 'user', '999888555', 'sdf@sda.com'),
+(5, 52443584714806, 'dsaffds', '$2y$10$68112fIy.cKDIyicS4SD8uCwEObUlh67NQaFZJP1hl3QOvvM1eF32', '2024-11-20 16:05:07', 'user', '999888555', 'admin123@example.com'),
+(6, 22702739556, 'dsaffds', '$2y$10$s2qyyJjiPATX6vo9e/.1o.Aed.jln.NAoMVSiQ3xS2gztrydChl42', '2024-11-20 16:05:08', 'user', '999888555', 'admin1234@example.com'),
+(7, 2144, 'fsdfsfd', '$2y$10$7UvsIAqZ6c14VhtED2H8.OeuPkiT9EsaJ.sZUnPlINOdT3F2taD4K', '2024-11-20 16:07:23', 'user', '999888555', 'za1@example.com');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -274,13 +286,13 @@ ALTER TABLE `imagesproduct`
 -- AUTO_INCREMENT for table `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `order_product`
 --
 ALTER TABLE `order_product`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `products`
@@ -292,7 +304,7 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- Constraints for dumped tables
