@@ -2,102 +2,64 @@
 
 session_start();
 
-	include("connection.php");
-	include("functions.php");
+include("connection.php");
+include("functions.php");
 
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    // Pobranie i zabezpieczenie danych wejściowych
+    $email = mysqli_real_escape_string($con, $_POST['email']);
+    $password = $_POST['password'];
 
-	if($_SERVER['REQUEST_METHOD'] == "POST")
-	{
-		//something was posted
-		$user_name = $_POST['user_name'];
-		$password = $_POST['password'];
+    if (!empty($email) && !empty($password)) {
+        // Przygotowanie zapytania SQL do bazy danych
+        $query = "SELECT * FROM users WHERE user_email = ? LIMIT 1";
+        $stmt = mysqli_prepare($con, $query);
+        mysqli_stmt_bind_param($stmt, "s", $email);
+        mysqli_stmt_execute($stmt);
+        $result = mysqli_stmt_get_result($stmt);
 
-		if(!empty($user_name) && !empty($password) && !is_numeric($user_name))
-		{
+        if ($result && mysqli_num_rows($result) > 0) {
+            $user_data = mysqli_fetch_assoc($result);
 
-			//read from database
-			$query = "select * from users where user_name = '$user_name' limit 1";
-			$result = mysqli_query($con, $query);
+            // Weryfikacja hasła
+            if (password_verify($password, $user_data['password'])) {
+                // Ustawienie danych sesji
+                $_SESSION['user_id'] = $user_data['user_id'];
+                $_SESSION['user_email'] = $user_data['email'];
+                $_SESSION['user_name'] = $user_data['name'];
 
-			if($result)
-			{
-				if($result && mysqli_num_rows($result) > 0)
-				{
+                // Sprawdzenie roli użytkownika
+                if ($user_data['user_group'] === 'admin') {
+                    $_SESSION['user_group'] = 'admin';
+                } else {
+                    $_SESSION['user_group'] = 'user';
+                }
 
-					$user_data = mysqli_fetch_assoc($result);
-
-					if($user_data['password'] === $password)
-					{
-
-						$_SESSION['user_id'] = $user_data['user_id'];
-						header("Location: index.php");
-						die;
-					}
-				}
-			}
-
-			echo "wrong username or password!";
-		}else
-		{
-			echo "wrong username or password!";
-		}
-	}
-
+                // Przekierowanie po zalogowaniu
+                header("Location: ../index.php");
+                echo "<script>
+                        alert('Logowanie zakończone sukcesem! Witamy, $user_name.');
+                        window.location.href = 'index.php';
+                      </script>";
+                exit;
+            } else {
+                echo "<script>
+                        alert('Niepoprawne hasło. Spróbuj ponownie.');
+                        window.history.back();
+                      </script>";
+            }
+        } else {
+            echo "<script>
+                    alert('Użytkownik o podanej nazwie nie istnieje.');
+                    window.history.back();
+                  </script>";
+        }
+        mysqli_stmt_close($stmt);
+    } else {
+        echo "<script>
+                alert('Proszę wypełnić wszystkie pola.');
+                window.history.back();
+              </script>";
+}
+}
 ?>
-
-
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Login</title>
-</head>
-<body>
-
-	<style type="text/css">
-
-	#text{
-
-		height: 25px;
-		border-radius: 5px;
-		padding: 4px;
-		border: solid thin #aaa;
-		width: 100%;
-	}
-
-	#button{
-
-		padding: 10px;
-		width: 100px;
-		color: white;
-		background-color: lightblue;
-		border: none;
-	}
-
-	#box{
-
-		background-color: grey;
-		margin: auto;
-		width: 300px;
-		padding: 20px;
-	}
-
-	</style>
-
-	<div id="box">
-
-		<form method="post">
-			<div style="font-size: 20px;margin: 10px;color: white;">Login</div>
-
-            Login:
-			<input id="text" type="text" name="user_name"><br><br>
-            Password:
-			<input id="text" type="password" name="password"><br><br>
-
-
-			<input id="button" type="submit" value="Login"><br><br>
-
-			<a href="signup.php">Click to Signup</a><br><br>
-		</form>
-	</div>
-</body>
-</html>

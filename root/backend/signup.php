@@ -1,34 +1,74 @@
 <?php
 session_start();
 
-	include("connection.php");
-	include("functions.php");
+include("connection.php");
+include("functions.php");
 
+if ($_SERVER['REQUEST_METHOD'] == "POST") {
+    // Pobranie danych z formularza
+    $user_name = trim($_POST['user_name']);
+    $password = trim($_POST['password']);
+    $confirm_password = trim($_POST['confirm_password']); // Dodane pole
+    $mobile = trim($_POST['mobile']);
+    $email = trim($_POST['email']);
 
-	if($_SERVER['REQUEST_METHOD'] == "POST")
-	{
-		//something was posted
-		$user_name = $_POST['user_name'];
-		$password = $_POST['password'];
-        $mobile = $_POST['mobile'];
-        $email = $_POST['email'];
+    // Sprawdzenie, czy wszystkie pola są wypełnione
+    if (!empty($user_name) && !empty($password) && !empty($confirm_password) && !empty($mobile) && !empty($email)) {
+        // Sprawdzenie, czy hasło i powtórzone hasło są zgodne
+        if ($password === $confirm_password) {
+            // Sprawdzanie, czy email już istnieje
+            $check_sql = "SELECT * FROM users WHERE user_email = ?";
+            $check_stmt = mysqli_prepare($con, $check_sql);
+            mysqli_stmt_bind_param($check_stmt, "s", $email);
+            mysqli_stmt_execute($check_stmt);
+            $check_result = mysqli_stmt_get_result($check_stmt);
 
-		if(!empty($user_name) && !empty($password) && !is_numeric($user_name))
-		{
+            if (mysqli_num_rows($check_result) > 0) {
+                echo "<script>
+                        alert('Posiadasz już konto w naszym sklepie. Proszę zalogować się.');
+                        window.location.href = '../account/login.html';
+                      </script>";
+            } else {
+                // Generowanie unikalnego ID użytkownika
+                $user_id = random_num(20);
 
-			//save to database
-			$user_id = random_num(20);
-			$query = "insert into users (user_id,user_name,password,user_group,mobile,email) values ('$user_id','$user_name','$password','user', '$mobile','$email')";
+                // Hashowanie hasła
+                $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-			mysqli_query($con, $query);
+                // Przygotowanie zapytania do dodania nowego użytkownika
+                $insert_sql = "INSERT INTO users (user_id, user_name, password, mobile, user_email) VALUES (?, ?, ?, ?, ?)";
+                $insert_stmt = mysqli_prepare($con, $insert_sql);
+                mysqli_stmt_bind_param($insert_stmt, "sssss", $user_id, $user_name, $hashed_password, $mobile, $email);
 
-			header("Location: login.php");
-			die;
-		}else
-		{
-			echo "Please enter some valid information!";
-		}
-	}
+                if (mysqli_stmt_execute($insert_stmt)) {
+                    echo "<script>
+                            alert('Nowe konto zostało utworzone pomyślnie!');
+                            window.location.href = '../account/login.html';
+                          </script>";
+                    exit;
+                } else {
+                    echo "Wystąpił błąd podczas tworzenia konta. Spróbuj ponownie później.";
+                }
+            }
+
+            // Zamknięcie zapytań
+            mysqli_stmt_close($check_stmt);
+            if (isset($insert_stmt)) {
+                mysqli_stmt_close($insert_stmt);
+            }
+        } else {
+            echo "<script>
+                    alert('Hasła nie są zgodne. Spróbuj ponownie.');
+                    window.history.back();
+                  </script>";
+        }
+    } else {
+        echo "Proszę wypełnić wszystkie pola formularza!";
+    }
+}
+?>
+
+	
 ?>
 
 
@@ -67,7 +107,7 @@ session_start();
 		padding: 20px;
 	}
 
-	</style>
+	/* </style>
 
 	<div id="box">
 
@@ -77,6 +117,8 @@ session_start();
 			<input id="text" type="text" name="user_name"><br><br>
             Password:
 			<input id="text" type="password" name="password"><br><br>
+			Powtórz hasło:
+   			<input type="password" id="confirm_password" name="confirm_password" required><br><br>
             Nr telefonu:
             <input id="text" type="text" name="mobile"><br><br>
             Email:
@@ -88,4 +130,4 @@ session_start();
 		</form>
 	</div>
 </body>
-</html>
+</html> */

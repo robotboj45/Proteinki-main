@@ -140,7 +140,7 @@ if (!$con) {
                             <div class="card-body text-center">
                                 <h5 class="card-title">'. $product_name .'</h5>
                                 <p class="card-text">'. $product_price .' zł</p>
-                                <a href="product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
+                                <a href="../products/product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
                             </div>
                         </div>
                     </div>';
