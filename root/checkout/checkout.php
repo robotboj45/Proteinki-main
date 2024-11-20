@@ -46,10 +46,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             mysqli_stmt_bind_param($item_stmt, "iisdi", $order_id, $item['id'], $item['name'], $item['price'], $item['quantity']);
             mysqli_stmt_execute($item_stmt);
         }
+        if (isset($_SESSION['user_id'])) {
+            $user_id = $_SESSION['user_id'];
+            $order_users_query = "INSERT INTO order_users (user_id, order_id) VALUES (?, ?)";
+            $order_users_stmt = mysqli_prepare($con, $order_users_query);
+            if ($order_users_stmt) {
+                mysqli_stmt_bind_param($order_users_stmt, "si", $user_id, $order_id);
+                mysqli_stmt_execute($order_users_stmt);
+                mysqli_stmt_close($order_users_stmt);
+            } else {
+                $message = "Wystąpił problem z powiązaniem zamówienia z użytkownikiem.";
+            }
+        }
         $_SESSION['cart'] = array();
         header("Location: order_success.php?order_id=" . $order_id);
         exit();
     }
+    header("Location: checkout.php" . ($message ? "?message=" . urlencode($message) : ""));
+    exit();
 }
 
 if (isset($_GET['message'])) {

@@ -20,7 +20,6 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
-    <!-- Header -->
     <header class="bg-dark text-white py-3">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="index.php"><img src="img/logo.png" alt="Logo Sklepu" class="logo"></a>
@@ -30,7 +29,6 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
         </div>
     </header>
 
-    <!-- Offcanvas Menu -->
     <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
         <div class="offcanvas-header">
             <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
@@ -58,32 +56,18 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="contact/contact.php">Kontakt</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <?php 
-                        if ($is_logged_in && !empty($username)) {
-                            echo $username; // Wyświetla nazwę użytkownika, jeśli jest zalogowany
-                        } else {
-                            echo 'Konto'; // Wyświetla "Konto", jeśli użytkownik nie jest zalogowany
-                        }
-                        ?>
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                        <?php if ($is_logged_in): ?>
-                            <li><a class="dropdown-item" href="backend/logout.php">Wyloguj się</a></li>
-                        <?php else: ?>
-                            <li><a class="dropdown-item" href="account/login.html">Logowanie</a></li>
-                            <li><a class="dropdown-item" href="account/register.html">Rejestracja</a></li>
-                        <?php endif; ?>
-                    </ul>
-                </li>
-
+                <?php if ($is_logged_in): ?>
+                    <li class="nav-item"><a class="nav-link" href="account/user_panel.php">Panel Użytkownika</a></li>
+                    <li class="nav-item"><a class="nav-link" href="backend/logout.php">Wyloguj się</a></li>
+                <?php else: ?>
+                    <li class="nav-item"><a class="nav-link" href="account/login.html">Logowanie</a></li>
+                    <li class="nav-item"><a class="nav-link" href="account/register.html">Rejestracja</a></li>
+                <?php endif; ?>
                 <li class="nav-item"><a class="nav-link" href="checkout/cart.php"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
             </ul>
         </div>
     </div>
 
-    <!-- Banner -->
     <section class="banner">
         <div class="container my-4 position-relative">
             <img src="img/banner.jpg" alt="Banner Promocyjny" class="img-fluid rounded shadow">
@@ -101,8 +85,6 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
         <h2 class="text-center mb-4">Nowości</h2>
         <div class="row g-4">
             <?php
-        
-
             $products_query = "
                 SELECT p.*, i.image_path 
                 FROM products p 
@@ -116,13 +98,10 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
                     $product_name = htmlspecialchars($product['name']);
                     $product_price = number_format($product['price'], 2, ',', ' ');
 
-                    // Sprawdzamy, czy istnieje zdjęcie w bazie danych
                     if (!empty($product['image_path'])) {
-                        // Zamieniamy dane binarne na base64
                         $image_data = base64_encode($product['image_path']);
                         $product_image = 'data:image/jpeg;base64,' . $image_data;
                     } else {
-                        // Domyślny obrazek
                         $product_image = 'img/default_product.jpg';
                     }
 
@@ -130,12 +109,12 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
                     <div class="col-md-6 col-lg-4">
                         <div class="card h-100 shadow-sm border-0">
                             <a href="products/product.php?id='. $product_id .'">
-    <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
-</a>
+                                <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
+                            </a>
                             <div class="card-body text-center">
                                 <h5 class="card-title">
-    <a href="products/product.php?id='. $product_id .'" class="text-dark text-decoration-none">'. $product_name .'</a>
-</h5>
+                                    <a href="products/product.php?id='. $product_id .'" class="text-dark text-decoration-none">'. $product_name .'</a>
+                                </h5>
                                 <p class="card-text">'. $product_price .' zł</p>
                                 <a href="products/product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
                             </div>
@@ -145,15 +124,12 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
             } else {
                 echo '<p class="text-center">Brak dostępnych produktów.</p>';
             }
-
-            // Zamykanie połączenia z bazą danych
             mysqli_close($con);
             ?>
         </div>
     </div>
 </section>
 
-    <!-- Footer -->
     <footer class="bg-dark text-white py-5">
         <div class="container text-center">
             <p>&copy; 2024 Sklep z Suplementami. Wszelkie prawa zastrzeżone.</p>
