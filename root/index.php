@@ -5,6 +5,8 @@ include("backend/connection.php");
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
+$is_logged_in = isset($_SESSION['user_id']);
+$username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -58,17 +60,24 @@ if (!$con) {
                 <li class="nav-item"><a class="nav-link" href="contact/contact.php">Kontakt</a></li>
                 <li class="nav-item dropdown">
                     <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <?php echo isset($user_data['username']) ? htmlspecialchars($user_data['username']) : 'Konto'; ?>
+                        <?php 
+                        if ($is_logged_in && !empty($username)) {
+                            echo $username; // Wyświetla nazwę użytkownika, jeśli jest zalogowany
+                        } else {
+                            echo 'Konto'; // Wyświetla "Konto", jeśli użytkownik nie jest zalogowany
+                        }
+                        ?>
                     </a>
                     <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                        <?php if(isset($user_data['username'])): ?>
-                            <li><a class="dropdown-item" href="account/logout.php">Wyloguj się</a></li>
+                        <?php if ($is_logged_in): ?>
+                            <li><a class="dropdown-item" href="backend/logout.php">Wyloguj się</a></li>
                         <?php else: ?>
-                            <li><a class="dropdown-item" href="account/login.php">Logowanie</a></li>
-                            <li><a class="dropdown-item" href="account/register.php">Rejestracja</a></li>
+                            <li><a class="dropdown-item" href="account/login.html">Logowanie</a></li>
+                            <li><a class="dropdown-item" href="account/register.html">Rejestracja</a></li>
                         <?php endif; ?>
                     </ul>
                 </li>
+
                 <li class="nav-item"><a class="nav-link" href="checkout/cart.php"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
             </ul>
         </div>
