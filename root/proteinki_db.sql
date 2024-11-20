@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.1
+-- version 5.2.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Lis 20, 2024 at 06:13 PM
--- Wersja serwera: 10.4.28-MariaDB
--- Wersja PHP: 8.2.4
+-- Czas generowania: 20 Lis 2024, 21:10
+-- Wersja serwera: 10.4.27-MariaDB
+-- Wersja PHP: 8.2.0
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,7 +18,7 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `proteinki_db`
+-- Baza danych: `proteinki_db`
 --
 
 -- --------------------------------------------------------
@@ -33,7 +33,7 @@ CREATE TABLE `categories` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `categories`
+-- Zrzut danych tabeli `categories`
 --
 
 INSERT INTO `categories` (`id`, `name`) VALUES
@@ -57,7 +57,7 @@ CREATE TABLE `imagesproduct` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `imagesproduct`
+-- Zrzut danych tabeli `imagesproduct`
 --
 
 INSERT INTO `imagesproduct` (`id`, `product_id`, `image_path`) VALUES
@@ -126,11 +126,12 @@ CREATE TABLE `orders` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `orders`
+-- Zrzut danych tabeli `orders`
 --
 
 INSERT INTO `orders` (`id`, `first_name`, `last_name`, `email`, `phone`, `voivodeship`, `postal_code`, `city`, `street`, `house_number`, `apartment_number`, `shipping_method`, `payment_method`, `consent_data`, `consent_terms`, `total`, `created_at`, `status`, `updated_at`) VALUES
-(6, 'Paweł', 'Giełota', 'pawelgielota@gmail.com', '+48 111 222 333', 'opolskie', '45-211', 'Opole', 'Grota Roweckiego', '9', '', 'DPD', '', 1, 1, 89.00, '2024-11-16 21:24:00', 'Oczekujące', '2024-11-16 21:24:00');
+(6, 'Paweł', 'Giełota', 'pawelgielota@gmail.com', '+48 111 222 333', 'opolskie', '45-211', 'Opole', 'Grota Roweckiego', '9', '', 'DPD', '', 1, 1, '89.00', '2024-11-16 21:24:00', 'Oczekujące', '2024-11-16 21:24:00'),
+(8, 'Test', 'Test', 'test@gmail.com', '+48 115 621 543', 'opolskie', '45-266', 'Opole', 'Kamilsona', '4', '543', 'DPD', '', 1, 1, '475.00', '2024-11-20 19:30:11', 'Oczekujące', '2024-11-20 19:30:11');
 
 -- --------------------------------------------------------
 
@@ -148,11 +149,32 @@ CREATE TABLE `order_product` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `order_product`
+-- Zrzut danych tabeli `order_product`
 --
 
 INSERT INTO `order_product` (`id`, `order_id`, `product_id`, `product_name`, `price`, `quantity`) VALUES
-(6, 6, 40, 'Creatine HCL 300g', 89.00, 1);
+(6, 6, 40, 'Creatine HCL 300g', '89.00', 1),
+(8, 8, 41, 'Micronized Creatine Powder 400g', '99.00', 3),
+(9, 8, 40, 'Creatine HCL 300g', '89.00', 2);
+
+-- --------------------------------------------------------
+
+--
+-- Struktura tabeli dla tabeli `order_users`
+--
+
+CREATE TABLE `order_users` (
+  `order_users_id` int(11) NOT NULL,
+  `user_id` bigint(20) NOT NULL,
+  `order_id` int(10) UNSIGNED NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Zrzut danych tabeli `order_users`
+--
+
+INSERT INTO `order_users` (`order_users_id`, `user_id`, `order_id`) VALUES
+(1, 37439592259482, 8);
 
 -- --------------------------------------------------------
 
@@ -169,28 +191,28 @@ CREATE TABLE `products` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `products`
+-- Zrzut danych tabeli `products`
 --
 
 INSERT INTO `products` (`id`, `name`, `description`, `price`, `category_id`) VALUES
-(24, 'Whey Protein 80', 'Wysokiej jakości białko serwatkowe wspierające budowę masy mięśniowej', 120.00, 1),
-(25, 'Casein Protein', 'Białko kazeinowe, idealne na noc, zapewniając stały dopływ aminokwasów', 89.00, 1),
-(26, 'Soy Protein', 'Białko sojowe, doskonałe dla wegan i osób z nietolerancją laktozy', 47.00, 1),
-(27, 'Creatine Monohydrate 500g', 'Suplement kreatynowy zwiększający siłę i wydolność mięśniową', 69.00, 7),
-(28, 'BCAA 2:1:1', 'Aminokwasy rozgałęzione w proporcji 2:1:1, wspierające regenerację mięśni', 50.00, 3),
-(29, 'L-Glutamine', 'L-Glutamina wspomagająca regenerację po intensywnym treningu', 39.00, 3),
-(30, 'L-Carnitine', 'L-Karnityna wspomagająca transport tłuszczów do komórek', 35.00, 3),
-(31, 'Omega-3 1000mg', 'Kwasy tłuszczowe wspierające zdrowie serca i układu krążenia', 23.00, 4),
-(32, 'Ashwagandha 500mg', 'Adaptogen wspomagający odporność na stres i regenerację organizmu', 43.00, 4),
-(33, 'Turmeric 1000mg', 'Kurkumina wspierająca zdrowie stawów i układ immunologiczny', 21.00, 4),
-(34, 'Thermo Burn', 'Spalacz tłuszczu przyspieszający metabolizm i wspierający redukcję masy ciała', 55.00, 5),
-(35, 'Fat Burner eXtreme', 'Fat Burner eXtreme to kompleksowy suplement diety, który stanowi źródło 10 różnych substancji, takich jak m.in. ekstrakt z nasion afrykańskiego mango, L-tyrozyna czy chrom.', 66.00, 5),
-(36, 'CLA 1000mg', 'Sprzyja redukcji tkanki tłuszczowej i wspiera metabolizm', 67.00, 5),
-(37, 'Vitamin D3 1000 IU', 'Witamina D3 wspomaga zdrowie kości oraz układ odpornościowy', 22.00, 6),
-(38, 'Multivitamin Complex', 'Kompleks witamin i minerałów wspierający ogólne zdrowie', 23.00, 6),
-(39, 'Magnesium 500mg', 'Magnez wspomagający funkcjonowanie mięśni i układu nerwowego', 12.00, 6),
-(40, 'Creatine HCL 300g', 'Kreatyna HCL, dobrze przyswajalna forma kreatyny wspomagająca budowę masy mięśniowej i regenerację', 89.00, 7),
-(41, 'Micronized Creatine Powder 400g', 'Mikronizowana kreatyna w proszku, doskonała rozpuszczalność i zwiększona biodostępność', 99.00, 7);
+(24, 'Whey Protein 80', 'Wysokiej jakości białko serwatkowe wspierające budowę masy mięśniowej', '120.00', 1),
+(25, 'Casein Protein', 'Białko kazeinowe, idealne na noc, zapewniając stały dopływ aminokwasów', '89.00', 1),
+(26, 'Soy Protein', 'Białko sojowe, doskonałe dla wegan i osób z nietolerancją laktozy', '47.00', 1),
+(27, 'Creatine Monohydrate 500g', 'Suplement kreatynowy zwiększający siłę i wydolność mięśniową', '69.00', 7),
+(28, 'BCAA 2:1:1', 'Aminokwasy rozgałęzione w proporcji 2:1:1, wspierające regenerację mięśni', '50.00', 3),
+(29, 'L-Glutamine', 'L-Glutamina wspomagająca regenerację po intensywnym treningu', '39.00', 3),
+(30, 'L-Carnitine', 'L-Karnityna wspomagająca transport tłuszczów do komórek', '35.00', 3),
+(31, 'Omega-3 1000mg', 'Kwasy tłuszczowe wspierające zdrowie serca i układu krążenia', '23.00', 4),
+(32, 'Ashwagandha 500mg', 'Adaptogen wspomagający odporność na stres i regenerację organizmu', '43.00', 4),
+(33, 'Turmeric 1000mg', 'Kurkumina wspierająca zdrowie stawów i układ immunologiczny', '21.00', 4),
+(34, 'Thermo Burn', 'Spalacz tłuszczu przyspieszający metabolizm i wspierający redukcję masy ciała', '55.00', 5),
+(35, 'Fat Burner eXtreme', 'Fat Burner eXtreme to kompleksowy suplement diety, który stanowi źródło 10 różnych substancji, takich jak m.in. ekstrakt z nasion afrykańskiego mango, L-tyrozyna czy chrom.', '66.00', 5),
+(36, 'CLA 1000mg', 'Sprzyja redukcji tkanki tłuszczowej i wspiera metabolizm', '67.00', 5),
+(37, 'Vitamin D3 1000 IU', 'Witamina D3 wspomaga zdrowie kości oraz układ odpornościowy', '22.00', 6),
+(38, 'Multivitamin Complex', 'Kompleks witamin i minerałów wspierający ogólne zdrowie', '23.00', 6),
+(39, 'Magnesium 500mg', 'Magnez wspomagający funkcjonowanie mięśni i układu nerwowego', '12.00', 6),
+(40, 'Creatine HCL 300g', 'Kreatyna HCL, dobrze przyswajalna forma kreatyny wspomagająca budowę masy mięśniowej i regenerację', '89.00', 7),
+(41, 'Micronized Creatine Powder 400g', 'Mikronizowana kreatyna w proszku, doskonała rozpuszczalność i zwiększona biodostępność', '99.00', 7);
 
 -- --------------------------------------------------------
 
@@ -210,7 +232,7 @@ CREATE TABLE `users` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `users`
+-- Zrzut danych tabeli `users`
 --
 
 INSERT INTO `users` (`id`, `user_id`, `user_name`, `password`, `date`, `user_group`, `mobile`, `user_email`) VALUES
@@ -219,7 +241,8 @@ INSERT INTO `users` (`id`, `user_id`, `user_name`, `password`, `date`, `user_gro
 (4, 96348417, 'fds', '$2y$10$oKQPpRJSMOzKK7t5QwCiXO.RDAhXo/k/AB7CqPPn9CIHUcOLuNlh.', '2024-11-20 16:05:07', 'user', '999888555', 'sdf@sda.com'),
 (5, 52443584714806, 'dsaffds', '$2y$10$68112fIy.cKDIyicS4SD8uCwEObUlh67NQaFZJP1hl3QOvvM1eF32', '2024-11-20 16:05:07', 'user', '999888555', 'admin123@example.com'),
 (6, 22702739556, 'dsaffds', '$2y$10$s2qyyJjiPATX6vo9e/.1o.Aed.jln.NAoMVSiQ3xS2gztrydChl42', '2024-11-20 16:05:08', 'user', '999888555', 'admin1234@example.com'),
-(7, 2144, 'fsdfsfd', '$2y$10$7UvsIAqZ6c14VhtED2H8.OeuPkiT9EsaJ.sZUnPlINOdT3F2taD4K', '2024-11-20 16:07:23', 'user', '999888555', 'za1@example.com');
+(7, 2144, 'fsdfsfd', '$2y$10$7UvsIAqZ6c14VhtED2H8.OeuPkiT9EsaJ.sZUnPlINOdT3F2taD4K', '2024-11-20 16:07:23', 'user', '999888555', 'za1@example.com'),
+(8, 37439592259482, 'Test', '$2y$10$FPxodkDqUR899ytuQDUoRe/zwYVT6sz7cZS6A6S9AWD5i1enDnlZi', '2024-11-20 18:45:13', 'user', '570804522', 'test@gmail.com');
 
 --
 -- Indeksy dla zrzutów tabel
@@ -252,6 +275,14 @@ ALTER TABLE `order_product`
   ADD KEY `order_id` (`order_id`);
 
 --
+-- Indeksy dla tabeli `order_users`
+--
+ALTER TABLE `order_users`
+  ADD PRIMARY KEY (`order_users_id`),
+  ADD KEY `idx_order_users_user_id` (`user_id`),
+  ADD KEY `idx_order_users_order_id` (`order_id`);
+
+--
 -- Indeksy dla tabeli `products`
 --
 ALTER TABLE `products`
@@ -262,65 +293,79 @@ ALTER TABLE `products`
 --
 ALTER TABLE `users`
   ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `uniq_user_id` (`user_id`),
   ADD KEY `user_id` (`user_id`),
   ADD KEY `date` (`date`),
   ADD KEY `user_name` (`user_name`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT dla zrzuconych tabel
 --
 
 --
--- AUTO_INCREMENT for table `categories`
+-- AUTO_INCREMENT dla tabeli `categories`
 --
 ALTER TABLE `categories`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
--- AUTO_INCREMENT for table `imagesproduct`
+-- AUTO_INCREMENT dla tabeli `imagesproduct`
 --
 ALTER TABLE `imagesproduct`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
--- AUTO_INCREMENT for table `orders`
+-- AUTO_INCREMENT dla tabeli `orders`
 --
 ALTER TABLE `orders`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- AUTO_INCREMENT for table `order_product`
+-- AUTO_INCREMENT dla tabeli `order_product`
 --
 ALTER TABLE `order_product`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
--- AUTO_INCREMENT for table `products`
+-- AUTO_INCREMENT dla tabeli `order_users`
+--
+ALTER TABLE `order_users`
+  MODIFY `order_users_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT dla tabeli `products`
 --
 ALTER TABLE `products`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 
 --
--- AUTO_INCREMENT for table `users`
+-- AUTO_INCREMENT dla tabeli `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
--- Constraints for dumped tables
+-- Ograniczenia dla zrzutów tabel
 --
 
 --
--- Constraints for table `imagesproduct`
+-- Ograniczenia dla tabeli `imagesproduct`
 --
 ALTER TABLE `imagesproduct`
   ADD CONSTRAINT `imagesproduct_ibfk_1` FOREIGN KEY (`product_id`) REFERENCES `products` (`id`) ON DELETE CASCADE;
 
 --
--- Constraints for table `order_product`
+-- Ograniczenia dla tabeli `order_product`
 --
 ALTER TABLE `order_product`
   ADD CONSTRAINT `order_product_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE;
+
+--
+-- Ograniczenia dla tabeli `order_users`
+--
+ALTER TABLE `order_users`
+  ADD CONSTRAINT `fk_order_users_order` FOREIGN KEY (`order_id`) REFERENCES `orders` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `fk_order_users_user` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
