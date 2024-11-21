@@ -1,10 +1,16 @@
-<?php 
+<?php
 session_start();
 include("../backend/connection.php");
 
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
+$user_group =  $_SESSION['user_group'];
+if ($user_group != 'admin') {
+    header('Location: ../index.php');
+    exit; // Ważne, aby zatrzymać dalsze wykonywanie kodu
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -14,6 +20,8 @@ if (!$con) {
     <title>Zarządzanie Produktami - Sklep Internetowy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
 
@@ -41,7 +49,7 @@ if (!$con) {
             <li class="nav-item"><a class="nav-link" href="../index.php">Strona główna</a></li>
             <li class="nav-item"><a class="nav-link" href="manage_products.php">Zarządzanie produktami</a></li>
             <li class="nav-item"><a class="nav-link" href="manage_orders.html">Zarządzanie zamówieniami</a></li>
-            <li class="nav-item"><a class="nav-link" href="add_product.html">Dodawanie produktu</a></li>
+            <li class="nav-item"><a class="nav-link" href="add_product.php">Dodawanie produktu</a></li>
         </ul>
     </div>
 </div>
