@@ -4,16 +4,16 @@ session_start();
 include("connection.php");
 
 if ($_SERVER['REQUEST_METHOD'] == "POST") {
-    $user_id = $_POST['user_id'];
-    $user_name = $_POST['user_name'];
-    $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    $user_group = $_POST['user_group'];
-    $mobile = $_POST['mobile'];
-    $email = $_POST['email'];
+    $user_id = mysqli_real_escape_string($con, $_POST['user_id']);
+    $user_name = mysqli_real_escape_string($con, $_POST['user_name']);
+    $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hashowanie hasła jest OK
+    $user_group = mysqli_real_escape_string($con, $_POST['user_group']);
+    $mobile = mysqli_real_escape_string($con, $_POST['mobile']);
+    $email = mysqli_real_escape_string($con, $_POST['email']);
     $date = date("Y-m-d H:i:s");
 
     if (!empty($user_id) && !empty($password) && !empty($email)) {
-        $query = "INSERT INTO users (user_id, user_name, password, date, user_group, mobile, email) VALUES ('$user_id', '$user_name','$password', '$date', '$user_group', '$mobile', '$email')";
+        $query = "INSERT INTO users (user_id, user_name, password, date, user_group, mobile, user_email) VALUES ('$user_id', '$user_name','$password', '$date', '$user_group', '$mobile', '$email')";
         if (mysqli_query($con, $query)) {
             echo "User created successfully!";
         } else {
@@ -42,25 +42,25 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 <div class="container">
     <h2>Create a New User</h2>
     <a href="read_users.php">Go back to user list</a>
-    <form method="POST">
+    <form method="POST" action="">
         <label>User ID:</label>
         <input type="text" name="user_id" required>
-        
+
         <label>User Name:</label>
         <input type="text" name="user_name" required>
-        
+
         <label>Password:</label>
         <input type="password" name="password" required>
-        
+
         <label>User Group:</label>
         <input type="text" name="user_group" required>
-        
+
         <label>Mobile:</label>
         <input type="text" name="mobile">
-        
+
         <label>Email:</label>
         <input type="email" name="email" required>
-        
+
         <input type="submit" value="Create User">
     </form>
 </div>

@@ -6,6 +6,8 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 $is_logged_in = isset($_SESSION['user_id']);
+$user_group =  $_SESSION['user_group'];
+
 $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
 ?>
 <!DOCTYPE html>
@@ -56,6 +58,10 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
                     </ul>
                 </li>
                 <li class="nav-item"><a class="nav-link" href="contact/contact.php">Kontakt</a></li>
+                <?php if ($user_group === 'admin'):?>
+                    <li class="nav-item"><a class="nav-link" href="backend/read_users.php">Admin Panel: Zarządzanie Użytkownikami</a></li>
+                    <li class="nav-item"><a class="nav-link" href="admin/manage_products.php">Admin Panel: Zarządzanie Produktami</a></li>
+                <?php endif; ?>
                 <?php if ($is_logged_in): ?>
                     <li class="nav-item"><a class="nav-link" href="account/user_panel.php">Panel Użytkownika</a></li>
                     <li class="nav-item"><a class="nav-link" href="backend/logout.php">Wyloguj się</a></li>

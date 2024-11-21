@@ -1,5 +1,11 @@
 <?php
 include('connection.php');
+session_start();
+$user_group =  $_SESSION['user_group'];
+if ($user_group != 'admin') {
+    header('Location: ../index.php');
+    exit; // Ważne, aby zatrzymać dalsze wykonywanie kodu
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $name = mysqli_real_escape_string($con, $_POST['productName']);
