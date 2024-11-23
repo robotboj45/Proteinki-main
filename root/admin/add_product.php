@@ -2,16 +2,24 @@
 include('../backend/connection.php');
 
 if ($_SERVER['REQUEST_METHOD'] === "POST") {
+    // Pobranie danych z formularza
     $product_name = mysqli_real_escape_string($con, $_POST['name']);
     $product_description = mysqli_real_escape_string($con, $_POST['description']);
     $product_price = mysqli_real_escape_string($con, $_POST['price']);
     $category = mysqli_real_escape_string($con, $_POST['category_id']);
+    
+    // Obsługa zdjęcia
+    $image_blob = null;
+    if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+        $image_blob = file_get_contents($_FILES['image']['tmp_name']);
+    }
 
-    if (!empty($product_name) && !empty($product_description) && !empty($product_price) && !empty($category)) {
-        $query = "INSERT INTO products (name, description, price, category_id) VALUES (?, ?, ?, ?)";
+    // Wstawienie danych do bazy
+    if (!empty($product_name) && !empty($product_description) && !empty($product_price) && !empty($category) && !empty($image_blob)) {
+        $query = "INSERT INTO products (name, description, price, category_id, image_path) VALUES (?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($con, $query);
-        mysqli_stmt_bind_param($stmt, "ssdi", $product_name, $product_description, $product_price, $category);
-        
+        mysqli_stmt_bind_param($stmt, "ssdis", $product_name, $product_description, $product_price, $category, $image_blob);
+
         if (mysqli_stmt_execute($stmt)) {
             echo "Produkt dodany pomyślnie!";
         } else {
