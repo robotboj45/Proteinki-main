@@ -105,11 +105,11 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
                     $product_price = number_format($product['price'], 2, ',', ' ');
 
                     if (!empty($product['image_path'])) {
-                        $image_data = base64_encode($product['image_path']);
-                        $product_image = 'data:image/jpeg;base64,' . $image_data;
+                        $product_image = 'data:image/jpeg;base64,' . base64_encode($product['image_path']);
                     } else {
                         $product_image = 'img/default_product.jpg';
                     }
+
 
                     echo '
                     <div class="col-md-6 col-lg-4">
