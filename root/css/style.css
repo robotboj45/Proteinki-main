@@ -11,9 +11,17 @@ body {
 }
 
 .logo {
+    animation: bounce 2s infinite;
     height: 70px; /* Zwiększenie wysokości logo */
 }
-
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
 .banner {
     position: relative;
 }
