@@ -138,7 +138,7 @@ if ($products_result && mysqli_num_rows($products_result) > 0) {
             <ul class="list-inline">
                 <li class="list-inline-item"><a class="text-white" href="policy/privacy.php">Polityka prywatności</a></li>
                 <li class="list-inline-item"><a class="text-white" href="policy/terms.php">Regulamin sklepu</a></li>
-                <li class="list-inline-item"><a class="text-white" href="about/about.php">O nas</a></li>
+                <li class="list-inline-item"><a class="text-white" href="about/about.html">O nas</a></li>
             </ul>
             <div class="social-icons mt-3">
                 <a href="#" class="text-white mx-2"><i class="fab fa-facebook fa-2x"></i></a>
