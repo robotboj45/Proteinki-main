@@ -7,11 +7,11 @@ if (!$con) {
 }
 
 $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
-$product_query = "SELECT p.*, i.image_path, c.name AS category_name 
+$product_query = "SELECT p.*, c.name AS category_name 
                   FROM products p
-                  LEFT JOIN imagesproduct i ON p.id = i.product_id
                   LEFT JOIN categories c ON p.category_id = c.id
                   WHERE p.id = ?";
+
 $stmt = $con->prepare($product_query);
 $stmt->bind_param("i", $product_id);
 $stmt->execute();
@@ -64,11 +64,13 @@ if (!$product) {
             <div class="row">
                 <div class="col-md-6">
                     <?php
-                    if (!empty($product['image_path'])) {
-                        echo '<img src="data:image/jpeg;base64,' . base64_encode($product['image_path']) . '" alt="' . htmlspecialchars($product['name']) . '" class="img-fluid rounded shadow">';
-                    } else {
-                        echo '<img src="../img/default_product.jpg" alt="' . htmlspecialchars($product['name']) . '" class="img-fluid rounded shadow">';
-                    }
+if (!empty($product['image_path'])) {
+    $mime_type = finfo_buffer(finfo_open(), $product['image_path'], FILEINFO_MIME_TYPE);
+    echo '<img src="data:' . $mime_type . ';base64,' . base64_encode($product['image_path']) . '" alt="' . htmlspecialchars($product['name']) . '" class="img-fluid rounded shadow">';
+} else {
+    echo '<img src="../img/default_product.jpg" alt="' . htmlspecialchars($product['name']) . '" class="img-fluid rounded shadow">';
+}
+
                     ?>
                 </div>
                 <div class="col-md-6">
