@@ -91,45 +91,41 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
         <h2 class="text-center mb-4">Nowości</h2>
         <div class="row g-4">
             <?php
-            $products_query = "
-                SELECT p.*, i.image_path 
-                FROM products p 
-                LEFT JOIN imagesproduct i ON p.id = i.product_id 
-                ORDER BY p.id DESC
-            ";
-            $products_result = mysqli_query($con, $products_query);
-            if ($products_result && mysqli_num_rows($products_result) > 0) {
-                while($product = mysqli_fetch_assoc($products_result)) {
-                    $product_id = (int)$product['id'];
-                    $product_name = htmlspecialchars($product['name']);
-                    $product_price = number_format($product['price'], 2, ',', ' ');
+           $products_query = "SELECT * FROM products ORDER BY id DESC";
+$products_result = mysqli_query($con, $products_query);
+if ($products_result && mysqli_num_rows($products_result) > 0) {
+    while($product = mysqli_fetch_assoc($products_result)) {
+        $product_id = (int)$product['id'];
+        $product_name = htmlspecialchars($product['name']);
+        $product_price = number_format($product['price'], 2, ',', ' ');
 
-                    if (!empty($product['image_path'])) {
-                        $product_image = 'data:image/jpeg;base64,' . base64_encode($product['image_path']);
-                    } else {
-                        $product_image = 'img/default_product.jpg';
-                    }
+        if (!empty($product['image_path'])) {
+            // Konwersja danych binarnych na obrazek
+            $product_image = 'data:image/jpeg;base64,' . base64_encode($product['image_path']);
+        } else {
+            // Użycie domyślnego obrazka w przypadku braku
+            $product_image = 'img/default_product.jpg';
+        }
 
-
-                    echo '
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0">
-                            <a href="products/product.php?id='. $product_id .'">
-                                <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
-                            </a>
-                            <div class="card-body text-center">
-                                <h5 class="card-title">
-                                    <a href="products/product.php?id='. $product_id .'" class="text-dark text-decoration-none">'. $product_name .'</a>
-                                </h5>
-                                <p class="card-text">'. $product_price .' zł</p>
-                                <a href="products/product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
-                            </div>
-                        </div>
-                    </div>';
-                }
-            } else {
-                echo '<p class="text-center">Brak dostępnych produktów.</p>';
-            }
+        echo '
+        <div class="col-md-6 col-lg-4">
+            <div class="card h-100 shadow-sm border-0">
+                <a href="products/product.php?id='. $product_id .'">
+                    <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
+                </a>
+                <div class="card-body text-center">
+                    <h5 class="card-title">
+                        <a href="products/product.php?id='. $product_id .'" class="text-dark text-decoration-none">'. $product_name .'</a>
+                    </h5>
+                    <p class="card-text">'. $product_price .' zł</p>
+                    <a href="products/product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
+                </div>
+            </div>
+        </div>';
+    }
+} else {
+    echo '<p class="text-center">Brak dostępnych produktów.</p>';
+}
             mysqli_close($con);
             ?>
         </div>
