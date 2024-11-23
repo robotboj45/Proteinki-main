@@ -27,6 +27,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $stmt = $con->prepare($update_query);
         $stmt->bind_param("ssdii", $name, $description, $price, $category_id, $product_id);
         $stmt->execute();
+
+        // Aktualizacja zdjęcia, jeśli zostało przesłane
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $image_blob = file_get_contents($_FILES['image']['tmp_name']);
+            $update_image_query = "UPDATE products SET image_path = ? WHERE id = ?";
+            $stmt_image = $con->prepare($update_image_query);
+            $stmt_image->bind_param("si", $image_blob, $product_id);
+            $stmt_image->send_long_data(0, $image_blob);
+            $stmt_image->execute();
+        }
     }
 }
 ?>
@@ -101,7 +111,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                 echo "<td>" . number_format($row['price'], 2) . " zł</td>";
                                 echo "<td>" . htmlspecialchars($row['description']) . "</td>";
                                 echo "<td>
-                                        <form method='POST' class='d-inline'>
+                                        <form method='POST' class='d-inline' enctype='multipart/form-data'>
                                             <input type='hidden' name='product_id' value='" . $row['id'] . "'>
                                             <button type='button' class='btn btn-sm btn-primary' data-bs-toggle='modal' data-bs-target='#editModal" . $row['id'] . "'>Edytuj</button>
                                             <button type='submit' name='delete' class='btn btn-sm btn-danger'>Usuń</button>
@@ -118,7 +128,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                                                 <h5 class='modal-title' id='editModalLabel'>Edytuj produkt</h5>
                                                 <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
                                             </div>
-                                            <form method='POST'>
+                                            <form method='POST' enctype='multipart/form-data'>
                                                 <div class='modal-body'>
                                                     <input type='hidden' name='product_id' value='" . $row['id'] . "'>
                                                     <div class='mb-3'>
@@ -144,6 +154,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         }
                         echo "
                                                         </select>
+                                                    </div>
+                                                    <div class='mb-3'>
+                                                        <label for='image' class='form-label'>Zdjęcie produktu:</label>
+                                                        <input type='file' id='image' name='image' accept='image/jpeg, image/png, image/webp' class='form-control'>
                                                     </div>
                                                 </div>
                                                 <div class='modal-footer'>
