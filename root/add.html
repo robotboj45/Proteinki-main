@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dodaj obraz</title>
+</head>
+<body>
+    <h1>Dodaj obraz</h1>
+    <form action="upload_image.php" method="POST" enctype="multipart/form-data">
+        <label for="product_id">ID Produktu:</label>
+        <input type="number" name="product_id" id="product_id" required>
+        <br><br>
+        <label for="image">Wybierz obraz:</label>
+        <input type="file" name="image" id="image" accept="image/*" required>
+        <br><br>
+        <button type="submit">Prześlij</button>
+    </form>
+</body>
+</html>

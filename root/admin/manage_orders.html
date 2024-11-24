@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zarządzanie Zamówieniami - Sklep Internetowy</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body class="d-flex flex-column min-vh-100">
+    <!-- Header -->
+    <header class="bg-dark text-white py-3">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="../index.php">
+                <img src="../img/logo.png" alt="Logo Sklepu" class="logo">
+            </a>
+            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <i class="fas fa-bars fa-2x"></i>
+            </button>
+        </div>
+    </header>
+
+    <!-- Offcanvas Menu -->
+    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+        <div class="offcanvas-header">
+            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body">
+            <ul class="navbar-nav">
+                <li class="nav-item"><a class="nav-link" href="../index.php">Strona główna</a></li>
+                <li class="nav-item"><a class="nav-link" href="manage_products.html">Zarządzanie produktami</a></li>
+                <li class="nav-item"><a class="nav-link" href="manage_orders.html">Zarządzanie zamówieniami</a></li>
+                <li class="nav-item"><a class="nav-link" href="add_product.html">Dodawanie produktu</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- Manage Orders Section -->
+    <section class="py-5">
+        <div class="container shadow-lg p-5 bg-white rounded">
+            <h2 class="text-center mb-4 text-uppercase text-primary">Zarządzanie Zamówieniami</h2>
+            <p class="lead text-center">Lista zamówień w sklepie...</p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>ID Zamówienia</th>
+                            <th>Data</th>
+                            <th>Klient</th>
+                            <th>Status</th>
+                            <th>Akcje</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>1</td>
+                            <td>2024-01-01</td>
+                            <td>Jan Kowalski</td>
+                            <td>W realizacji</td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-primary">Szczegóły</a>
+                                <a href="#" class="btn btn-sm btn-danger">Usuń</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>2024-01-02</td>
+                            <td>Anna Nowak</td>
+                            <td>Zrealizowane</td>
+                            <td>
+                                <a href="#" class="btn btn-sm btn-primary">Szczegóły</a>
+                                <a href="#" class="btn btn-sm btn-danger">Usuń</a>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-5 mt-auto">
+        <div class="container text-center">
+            <p>&copy; 2024 Sklep z Suplementami. Wszelkie prawa zastrzeżone.</p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
