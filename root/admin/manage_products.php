@@ -5,12 +5,54 @@ include("../backend/connection.php");
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
-$user_group =  $_SESSION['user_group'];
+
+$user_group = $_SESSION['user_group'];
 if ($user_group != 'admin') {
     header('Location: ../index.php');
     exit; // Ważne, aby zatrzymać dalsze wykonywanie kodu
 }
 
+// Obsługa usuwania produktu
+if (isset($_GET['delete_id'])) {
+    $delete_id = $_GET['delete_id'];
+    $sql_delete = "DELETE FROM products WHERE id = ?";
+    $stmt = $con->prepare($sql_delete);
+    $stmt->bind_param("i", $delete_id);
+    if ($stmt->execute()) {
+        header("Location: manage_products.php"); // Przekierowanie po usunięciu
+    } else {
+        echo "Błąd podczas usuwania produktu: " . $con->error;
+    }
+    $stmt->close();
+}
+
+// Obsługa edycji produktu
+if (isset($_POST['edit_product'])) {
+    $product_id = $_POST['product_id'];
+    $product_name = $_POST['product_name'];
+    $product_price = $_POST['product_price'];
+
+    
+    // Przetwarzanie zdjęcia
+    if ($_FILES['product_image']['error'] == UPLOAD_ERR_OK) {
+        $product_image = addslashes(file_get_contents($_FILES['product_image']['tmp_name']));
+        $sql_edit = "UPDATE products SET name = ?,  price = ?, category_id = ?, image = ? WHERE id = ?";
+        $stmt = $con->prepare($sql_edit);
+        $stmt->bind_param("ssdisi", $product_name, $product_price, $product_category, $product_image, $product_id);
+    } else {
+        // Jeśli zdjęcie nie zostało zmienione, edytuj tylko inne dane
+        $sql_edit = "UPDATE products SET name = ?, , price = ?, category_id = ? WHERE id = ?";
+        $stmt = $con->prepare($sql_edit);
+        $stmt->bind_param("ssdis", $product_name,  $product_price, $product_category, $product_id);
+    }
+
+    if ($stmt->execute()) {
+        header("Location: manage_products.php"); // Przekierowanie po edytowaniu
+    } else {
+        echo "Błąd podczas edycji produktu: " . $con->error;
+    }
+    $stmt->close();
+}
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -24,7 +66,6 @@ if ($user_group != 'admin') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
-
 
 <!-- Header -->
 <header class="bg-dark text-white py-3">
@@ -73,7 +114,7 @@ if ($user_group != 'admin') {
                 <tbody>
                     <?php
                     // Pobranie danych z bazy
-                    $sql = "SELECT products.id, products.name, categories.name AS category_name, products.price 
+                    $sql = "SELECT products.id, products.name, categories.name AS category_name, products.price, products.category_id
                             FROM products
                             JOIN categories ON products.category_id = categories.id";
                     $result = $con->query($sql);
@@ -87,16 +128,43 @@ if ($user_group != 'admin') {
                             echo "<td>" . $row['category_name'] . "</td>";
                             echo "<td>" . number_format($row['price'], 2) . " zł</td>";
                             echo "<td>
-                                    <a href='#' class='btn btn-sm btn-primary'>Edytuj</a>
-                                    <a href='#' class='btn btn-sm btn-danger'>Usuń</a>
+                                    <a href='#' class='btn btn-sm btn-primary' data-bs-toggle='modal' data-bs-target='#editModal" . $row['id'] . "'>Edytuj</a>
+                                    <a href='?delete_id=" . $row['id'] . "' class='btn btn-sm btn-danger'>Usuń</a>
                                   </td>";
                             echo "</tr>";
+
+                            // Modal do edycji produktu
+                            echo "
+                                <div class='modal fade' id='editModal" . $row['id'] . "' tabindex='-1' aria-labelledby='editModalLabel' aria-hidden='true'>
+                                    <div class='modal-dialog'>
+                                        <div class='modal-content'>
+                                            <div class='modal-header'>
+                                                <h5 class='modal-title' id='editModalLabel'>Edytuj produkt</h5>
+                                                <button type='button' class='btn-close' data-bs-dismiss='modal' aria-label='Close'></button>
+                                            </div>
+                                            <div class='modal-body'>
+                                                <form method='POST' enctype='multipart/form-data'>
+                                                    <input type='hidden' name='product_id' value='" . $row['id'] . "'>
+                                                    <div class='mb-3'>
+                                                        <label for='product_name' class='form-label'>Nazwa produktu</label>
+                                                        <input type='text' class='form-control' name='product_name' value='" . $row['name'] . "' required>
+                                                    </div>
+                                                    <div class='mb-3'>
+                                                        <label for='product_price' class='form-label'>Cena produktu</label>
+                                                        <input type='number' step='0.01' class='form-control' name='product_price' value='" . $row['price'] . "' required>
+                                                    </div>
+                                                    <button type='submit' class='btn btn-primary' name='edit_product'>Zapisz zmiany</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            ";
                         }
                     } else {
                         echo "<tr><td colspan='5' class='text-center'>Brak produktów do wyświetlenia.</td></tr>";
                     }
 
-                    // Zamknięcie połączenia z bazą
                     $con->close();
                     ?>
                 </tbody>
