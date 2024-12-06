@@ -109,9 +109,11 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
                 </div>
 
                 <button type="submit" class="btn btn-primary w-100">Dodaj Produkt</button>
+                <a href="dashboard.html" class="btn btn-success mt-4">Powrót</a>
             </form>
         </div>
     </section>
+
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-4 mt-auto">

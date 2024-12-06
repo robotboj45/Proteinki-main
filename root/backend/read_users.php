@@ -48,7 +48,7 @@ $result = mysqli_query($con, $query);
                 <td><?php echo $user['user_name']; ?></td>
                 <td><?php echo $user['user_group']; ?></td>
                 <td><?php echo $user['mobile']; ?></td>
-                <td><?php echo $user['email']; ?></td>
+                <td><?php echo $user['user_email']; ?></td>
                 <td><?php echo $user['date']; ?></td>
                 <td>
                     <a href="update_user.php?id=<?php echo $user['id']; ?>" class="btn btn-warning btn-sm">Edytuj</a>
