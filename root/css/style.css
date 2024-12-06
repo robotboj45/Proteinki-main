@@ -20,30 +20,44 @@ body {
     0%, 100% {
         transform: translateY(0);
     }
+
     50% {
         transform: translateY(-10px);
     }
 }
 
-/* Login Section */
-.row {
+/* Wspólne style dla sekcji logowania i rejestracji */
+.login .row, .register .row {
     background: white;
     border-radius: 30px;
     box-shadow: 12px 12px 22px rgba(0, 0, 0, 0.1);
+    display: flex;
+    align-items: stretch;
+    min-height: 600px; /* Minimalna wysokość sekcji */
 }
 
-.login img {
+.login .col-lg-5, .register .col-lg-5 {
+    display: flex;
+    overflow: hidden;
+}
+
+.login img, .register img {
     border-top-left-radius: 30px;
     border-bottom-left-radius: 30px;
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
 }
 
-.login h1 {
+.login h1, .register h1 {
     font-size: 4rem;
-    font-weight: 500;
-    font-family: "Titan One", sans-serif;
-	
+    font-weight: 700;
+    font-family: "Montserrat", sans-serif; /* Nowa czcionka do nagłówków */
+    color: #000 !important; /* Czarny kolor tekstu, wymuszenie ważności */
+    margin-bottom: 30px;
 }
 
+/* Inputy i przyciski */
 .inp {
     height: 50px;
     width: 70%;
@@ -51,6 +65,8 @@ body {
     outline: none;
     border-radius: 60px;
     box-shadow: 1px 1px 26px rgba(0, 0, 0, 0.12);
+    padding: 0 20px;
+    font-size: 1rem;
 }
 
 .btn1 {
@@ -62,11 +78,12 @@ body {
     font-weight: 600;
     background: darkgoldenrod;
     color: white;
+    transition: background 0.3s ease;
 }
 
-.btn1:hover {
-    background: gold;
-}
+    .btn1:hover {
+        background: gold;
+    }
 
 /* Footer */
 footer {
@@ -83,14 +100,14 @@ footer {
     transition: color 0.3s ease;
 }
 
-.footer-links a:hover {
-    color: #ffd700;
-}
+    .footer-links a:hover {
+        color: #ffd700;
+    }
 
 .social-icons a {
     transition: transform 0.3s ease;
 }
 
-.social-icons a:hover {
-    transform: scale(1.2);
-}
+    .social-icons a:hover {
+        transform: scale(1.2);
+    }
