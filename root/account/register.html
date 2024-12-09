@@ -6,6 +6,9 @@
     <title>Rejestracja - Sklep Internetowy</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
+    <!-- Dodajemy animacje oraz czcionki jak w przykładzie logowania -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&display=swap" rel="stylesheet">
+
 </head>
 <body class="d-flex flex-column min-vh-100">
     <!-- Header -->
@@ -35,36 +38,52 @@
         </div>
     </div>
 
-<!-- Register Section -->
-<section class="py-5">
-    <div class="container shadow-lg p-5 bg-white rounded">
-        <h2 class="text-center mb-4 text-uppercase text-primary">Rejestracja</h2>
-        <form action="../backend/signup.php" method="POST" class="w-50 mx-auto">
-            <div class="mb-3">
-                <label for="user_name" class="form-label">Nazwa użytkownika:</label>
-                <input type="text" id="user_name" name="user_name" class="form-control" required>
+    <!-- Register Section -->
+    <section class="register py-5 bg-light">
+        <div class="container">
+            <div class="row g-0 shadow-lg">
+                <!-- Wstaw odpowiedni obrazek z folderu img -->
+                <div class="col-lg-5">
+                    <img src="../img/register-img.jpg" class="img-fluid" alt="Registration Image">
+                </div>
+                <div class="col-lg-7 text-center py-5">
+                    <h1 class=" text-uppercase text-primary">Rejestracja</h1>
+                    <form action="../backend/signup.php" method="POST" class="pt-5">
+                        <div class="form-row">
+                            <div class="offset-1 col-lg-10">
+                                <input type="text" id="user_name" name="user_name" class="inp my-3 px-3" placeholder="Nazwa użytkownika" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="offset-1 col-lg-10">
+                                <input type="email" id="email" name="email" class="inp my-3 px-3" placeholder="Email" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="offset-1 col-lg-10">
+                                <input type="text" id="mobile" name="mobile" class="inp my-3 px-3" placeholder="Telefon" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="offset-1 col-lg-10">
+                                <input type="password" id="password" name="password" class="inp my-3 px-3" placeholder="Hasło" required>
+                            </div>
+                        </div>
+                        <div class="form-row">
+                            <div class="offset-1 col-lg-10">
+                                <input type="password" id="confirm_password" name="confirm_password" class="inp my-3 px-3" placeholder="Powtórz hasło" required>
+                            </div>
+                        </div>
+                        <div class="form-row pt-4 pb-3">
+                            <div class="offset-1 col-lg-10">
+                                <button type="submit" class="btn1">Zarejestruj</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
             </div>
-            <div class="mb-3">
-                <label for="email" class="form-label">Email:</label>
-                <input type="email" id="email" name="email" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="mobile" class="form-label">Telefon:</label>
-                <input type="text" id="mobile" name="mobile" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="password" class="form-label">Hasło:</label>
-                <input type="password" id="password" name="password" class="form-control" required>
-            </div>
-            <div class="mb-3">
-                <label for="confirm_password" class="form-label">Powtórz hasło:</label>
-                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary w-100">Zarejestruj</button>
-        </form>
-    </div>
-</section>
+        </div>
+    </section>
 
 
     <!-- Footer -->
