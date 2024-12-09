@@ -63,6 +63,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
         <input type="submit" value="Create User">
     </form>
+    <a href="read_users.php" class="btn btn-success mt-4">Powrót</a>
 </div>
 
 </body>
