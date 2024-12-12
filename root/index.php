@@ -74,16 +74,43 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
         </div>
     </div>
 
-    <section class="banner">
-        <div class="container my-4 position-relative">
-            <img src="img/banner.jpg" alt="Banner Promocyjny" class="img-fluid rounded shadow">
-            <div class="banner-text position-absolute top-50 start-50 translate-middle text-center text-white">
-                <h1 class="display-4 fw-bold">Witamy w naszym sklepie z suplementami!</h1>
-                <p class="lead">Zadbaj o swoje zdrowie i osiągnij swoje cele fitness z naszymi produktami.</p>
-                <a href="#products" class="btn btn-warning btn-lg mt-3">Przeglądaj Nowości</a>
+    <section class="hero-banner text-center">
+    <div class="hero-content">
+        <h1 class="hero-title">Witamy w Sklepie z Suplementami</h1>
+    </div>
+</section>
+    <section class="slider">
+    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
+            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
+        </div>
+        <div class="carousel-inner">
+            <div class="carousel-item active">
+                <img src="img/zdjecie1.jpg" class="d-block w-100" alt="Zdjęcie 1">
+            </div>
+            <div class="carousel-item">
+                <img src="img/zdjecie2.jpg" class="d-block w-100" alt="Zdjęcie 2">
+            </div>
+            <div class="carousel-item">
+                <img src="img/zdjecie3.jpg" class="d-block w-100" alt="Zdjęcie 3">
             </div>
         </div>
-    </section>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Poprzedni</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Następny</span>
+        </button>
+    </div>
+    <div class="slider-button text-center mt-4">
+        <a href="#products" class="btn btn-primary btn-lg">Zobacz Nowości</a>
+    </div>
+</section>
+
 
 <!-- Products -->
 <section id="products" class="products py-5">
