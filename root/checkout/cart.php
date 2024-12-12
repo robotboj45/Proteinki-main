@@ -92,10 +92,10 @@ if (isset($_GET['message'])) {
                         <a class="nav-link text-white" href="../index.php">Strona główna</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="../policy/privacy.php">Polityka prywatności</a>
+                        <a class="nav-link text-white" href="../policy/privacy.html">Polityka prywatności</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="../policy/terms.php">Regulamin</a>
+                        <a class="nav-link text-white" href="../policy/terms.html">Regulamin</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="cart.php"><i class="fas fa-shopping-cart"></i> Koszyk</a>
@@ -107,14 +107,14 @@ if (isset($_GET['message'])) {
 
     <section class="container my-5 shadow-lg p-5 bg-white rounded">
         <h1 class="text-center mb-4 text-uppercase text-primary">Twój koszyk</h1>
-        
+
         <?php if ($message): ?>
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
                 <?php echo $message; ?>
                 <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
             </div>
         <?php endif; ?>
-        
+
         <?php if (isset($_SESSION['cart']) && !empty($_SESSION['cart'])): ?>
             <form method="post" action="cart.php">
                 <table class="table table-bordered">

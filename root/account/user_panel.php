@@ -61,9 +61,9 @@ if (!empty($order_ids)) {
             <nav>
                 <ul class="nav">
                     <li class="nav-item"><a class="nav-link" href="../index.php">Strona główna</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../policy/privacy.php">Polityka prywatności</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../policy/terms.php">Regulamin</a></li>
-                    <li class="nav-item"><a class="nav-link" href="../cart.php"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/policy/privacy.html">Polityka prywatności</a></li>
+                    <li class="nav-item"><a class="nav-link" href="/policy/terms.html">Regulamin</a></li>
+                    <li class="nav-item"><a class="nav-link" href="../checkout/cart.php"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
                     <li class="nav-item"><a class="nav-link" href="user_panel.php">Panel Użytkownika</a></li>
                     <li class="nav-item"><a class="nav-link" href="../backend/logout.php">Wyloguj się</a></li>
                 </ul>
@@ -73,7 +73,7 @@ if (!empty($order_ids)) {
 
     <section class="container my-5 shadow-lg p-5 bg-white rounded">
         <h1 class="text-center mb-4 text-uppercase text-primary">Panel Użytkownika</h1>
-        
+
         <div class="section">
             <h4 class="mb-3">Dane Użytkownika</h4>
             <ul class="list-group">

@@ -226,6 +226,38 @@ footer {
     .social-icons a:hover {
         transform: scale(1.2);
     }
+.products .card img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.products .card img:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Animacja dla linków w stopce */
+footer .list-inline-item a {
+    transition: color 0.3s ease, text-shadow 0.3s ease;
+}
+
+footer .list-inline-item a:hover {
+    color: #ffd700;
+    text-shadow: 0 0 5px rgba(255, 215, 0, 0.8);
+}
+/* Animacje dla rozwijanego menu */
+.offcanvas .nav-link {
+    transition: color 0.3s ease, transform 0.3s ease;
+}
+
+.offcanvas .nav-link:hover {
+    color: #ffd700;
+    transform: translateX(10px);
+}
+
+.offcanvas .dropdown-menu.show {
+    transform: translateY(0);
+    opacity: 1;
+}
 
 
