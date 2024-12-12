@@ -57,6 +57,121 @@ body {
     margin-bottom: 30px;
 }
 
+/* Stylizacja slidera */
+/* Stylizacja slidera */
+.slider {
+    margin-top: 20px;
+}
+
+/* Obrazy w sliderze */
+.carousel-inner img {
+    width: 100%; /* Pełna szerokość kontenera */
+    height: 500px; /* Stała wysokość dla wszystkich obrazów */
+    object-fit: cover; /* Przycinanie obrazów, aby wypełniły kontener */
+}
+
+/* Responsywność obrazów */
+@media (max-width: 1200px) {
+    .carousel-inner img {
+        height: 400px; /* Zmniejszona wysokość na mniejszych ekranach */
+    }
+}
+
+@media (max-width: 768px) {
+    .carousel-inner img {
+        height: 300px; /* Jeszcze mniejsza wysokość dla smartfonów */
+    }
+}
+
+@media (max-width: 576px) {
+    .carousel-inner img {
+        height: 250px; /* Najmniejsza wysokość dla bardzo małych ekranów */
+    }
+}
+
+/* Stylizacja przycisku pod sliderem */
+.slider-button .btn {
+    background-color: #007bff; /* Kolor przycisku */
+    color: white;
+    font-size: 1.2rem;
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 5px;
+    text-transform: uppercase;
+}
+
+.slider-button .btn:hover {
+    background-color: #0056b3; /* Kolor przycisku po najechaniu */
+    color: white;
+}
+/*napis powitalny*/
+/* Sekcja nad sliderem */
+.hero-banner {
+    margin-top: 20px;
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f8f9fa; /* Jasne tło */
+    position: relative;
+}
+
+.hero-content {
+    position: relative;
+    z-index: 2;
+    animation: fade-in 2s ease-in-out; /* Animacja wchodzenia */
+}
+
+.hero-logo {
+    width: 100px;
+    height: auto;
+    margin-bottom: 20px;
+    animation: pulse 2s infinite; /* Efekt pulsowania */
+}
+
+.hero-title {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #007bff; /* Główny kolor */
+    animation: color-change 3s infinite; /* Animacja zmiany koloru */
+}
+
+/* Animacje */
+@keyframes fade-in {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 1;
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1); /* Powiększenie */
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes color-change {
+    0% {
+        color: #000; /* Niebieski */
+    }
+    33% {
+        color: #28a745; /* Zielony */
+    }
+    66% {
+        color: #ffc107; /* Żółty */
+    }
+    100% {
+        color: #007bff; /* Powrót do niebieskiego */
+    }
+}
+
+
 /* Inputy i przyciski */
 .inp {
     height: 50px;
@@ -111,3 +226,6 @@ footer {
     .social-icons a:hover {
         transform: scale(1.2);
     }
+
+
+

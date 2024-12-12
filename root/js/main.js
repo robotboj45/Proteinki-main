@@ -7,3 +7,13 @@ var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggl
 var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
     return new bootstrap.Tooltip(tooltipTriggerEl);
 });
+
+document.addEventListener('DOMContentLoaded', () => {
+    const carousel = document.querySelector('#carouselExampleIndicators');
+    if (carousel) {
+        new bootstrap.Carousel(carousel, {
+            interval: 2500, // Automatyczna zmiana co 4 sekundy
+            wrap: true,    // Powtarzanie slajdów w pętli
+        });
+    }
+});

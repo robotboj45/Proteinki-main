@@ -5,6 +5,7 @@ include("../backend/connection.php");
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
+    // Pobranie danych z formularza
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);
     $email = trim($_POST['email']);
@@ -271,21 +272,18 @@ if (isset($_GET['message'])) {
             
             <div class="section">
                 <h4 class="mb-3">Metoda płatności</h4>
-                <div class="row g-3">
-                    <div class="col-md-6">
-                        <select class="form-select" name="payment_method" id="payment_method" required>
-                            <option value="" selected disabled>Wybierz metodę płatności</option>
-                            <option value="przelew">Przelew bankowy</option>
-                            <option value="karta">Karta kredytowa</option>
-                            <option value="paypal">PayPal</option>
-                            <option value="za_pobraniem">Za pobraniem</option>
-                        </select>
-                        <div class="invalid-feedback">
-                            Wybierz metodę płatności.
-                        </div>
-                    </div>
+                <select class="form-select" name="payment_method" id="payment_method" required>
+                    <option value="" selected disabled>Wybierz metodę płatności</option>
+                    <option value="przelew">Przelew bankowy</option>
+                    <option value="karta">Karta kredytowa</option>
+                    <option value="paypal">PayPal</option>
+                    <option value="za_pobraniem">Za pobraniem</option>
+                </select>
+                <div class="invalid-feedback">
+                    Wybierz metodę płatności.
                 </div>
             </div>
+
             
             <div class="section">
                 <h4 class="mb-3">Zgody</h4>
