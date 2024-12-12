@@ -6,6 +6,8 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 
+
+
 $product_id = isset($_GET['id']) ? (int)$_GET['id'] : 0;
 $product_query = "SELECT p.*, c.name AS category_name 
                   FROM products p
@@ -81,10 +83,21 @@ if (!empty($product['image_path'])) {
                     </p>
                     <p><?php echo nl2br(htmlspecialchars($product['description'])); ?></p>
                     <a href="../checkout/cart.php?action=add&id=<?php echo $product['id']; ?>" class="btn btn-primary mt-3">Dodaj do koszyka</a>
+
+                    <?php
+                        if ($_SESSION['user_group'] == 'admin') 
+                        {
+                            echo "<a href='../admin/edit_product.php?id=" . $product_id . "' class='btn btn-primary mt-3'>Edytuj</a>" ;
+                        exit;
+                        }
+                    ?>
                 </div>
+
             </div>
         </div>
     </section>
+
+   
 
     <!-- Footer -->
     <footer class="bg-dark text-white py-5">
