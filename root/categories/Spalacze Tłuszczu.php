@@ -63,10 +63,10 @@ if (!$con) {
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                     <?php if(isset($user_data['username'])): ?>
-                        <li><a class="dropdown-item" href="account/logout.php">Wyloguj się</a></li>
+                        <li><a class="dropdown-item" href="../backend/logout.php">Wyloguj się</a></li>
                     <?php else: ?>
-                        <li><a class="dropdown-item" href="account/login.php">Logowanie</a></li>
-                        <li><a class="dropdown-item" href="account/register.php">Rejestracja</a></li>
+                        <li><a class="dropdown-item" href="../account/login.html">Logowanie</a></li>
+                        <li><a class="dropdown-item" href="../account/register.html">Rejestracja</a></li>
                     <?php endif; ?>
                 </ul>
             </li>
