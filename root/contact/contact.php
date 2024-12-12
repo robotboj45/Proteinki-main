@@ -21,10 +21,10 @@
                         <a class="nav-link text-white" href="../index.php">Strona główna</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="../policy/privacy.php">Polityka prywatności</a>
+                        <a class="nav-link text-white" href="../policy/privacy.html">Polityka prywatności</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="../policy/terms.php">Regulamin</a>
+                        <a class="nav-link text-white" href="../policy/terms.html">Regulamin</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="../checkout/cart.php"><i class="fas fa-shopping-cart"></i> Koszyk</a>
