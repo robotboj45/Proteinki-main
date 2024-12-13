@@ -72,7 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === "POST") {
     <!-- Add Product Section -->
     <section class="py-5">
         <div class="container shadow-lg p-5 bg-white rounded">
-            <h2 class="text-center mb-4 text-uppercase text-primary">Dodaj nowy produkt</h2>
+            <h2 class="text-center mb-4 text-uppercase text-primary h-format">Dodaj nowy produkt</h2>
             <form method="POST" action="add_product.php" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label for="name" class="form-label">Nazwa produktu:</label>
