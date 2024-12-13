@@ -90,10 +90,7 @@ if (!empty($product['image_path'])) {
                         {
                             echo "<a href='../admin/edit_product.php?id=" . $product_id . "' class='btn btn-primary mt-3'>Edytuj</a>" ;
                         exit;
-                        }
-                        else{
-                            echo '';
-                        }
+                        };
                     ?>
                 </div>
 
