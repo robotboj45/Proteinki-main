@@ -85,10 +85,14 @@ if (!empty($product['image_path'])) {
                     <a href="../checkout/cart.php?action=add&id=<?php echo $product['id']; ?>" class="btn btn-primary mt-3">Dodaj do koszyka</a>
 
                     <?php
-                        if ($_SESSION['user_group'] == 'admin')
+                    if (isset($_SESSION['user_group']) && $_SESSION['user_group'] === 'admin') 
+
                         {
                             echo "<a href='../admin/edit_product.php?id=" . $product_id . "' class='btn btn-primary mt-3'>Edytuj</a>" ;
                         exit;
+                        }
+                        else{
+                            echo '';
                         }
                     ?>
                 </div>
