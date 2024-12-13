@@ -72,7 +72,7 @@ if (!empty($order_ids)) {
     </header>
 
     <section class="container my-5 shadow-lg p-5 bg-white rounded">
-        <h1 class="text-center mb-4 text-uppercase text-primary">Panel Użytkownika</h1>
+        <h1 class="text-center mb-4 text-uppercase text-primary h-format">Panel Użytkownika</h1>
 
         <div class="section">
             <h4 class="mb-3">Dane Użytkownika</h4>
