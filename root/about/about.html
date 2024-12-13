@@ -3,164 +3,85 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>O nas - Sklep Internetowy</title>
+    <title>O nas - Proteinki</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <style>
-        .fade-in {
-            animation: fadeIn 2s ease-in-out;
-        }
-
-        @keyframes fadeIn {
-            0% { opacity: 0; }
-            100% { opacity: 1; }
-        }
-
-        .funny-text {
-            font-weight: bold;
-            color: #FF6347;
-            transition: transform 0.3s;
-        }
-
-        .funny-text:hover {
-            transform: scale(1.1) rotate(-2deg);
-        }
-
-        .btn-wiggle {
-            animation: wiggle 0.5s ease-in-out infinite;
-        }
-
-        @keyframes wiggle {
-            0%, 100% { transform: rotate(-3deg); }
-            50% { transform: rotate(3deg); }
-        }
-
-        .bounce {
-            animation: bounce 1.5s ease-in-out infinite;
-        }
-
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-15px); }
-            60% { transform: translateY(-10px); }
-        }
-
-        .highlight {
-            background: linear-gradient(90deg, rgba(255,223,186,1) 0%, rgba(255,94,0,1) 50%, rgba(255,223,186,1) 100%);
-            padding: 10px;
-            border-radius: 8px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { box-shadow: 0 0 5px #FF6347; }
-            50% { box-shadow: 0 0 20px #FF4500; }
-            100% { box-shadow: 0 0 5px #FF6347; }
-        }
-
-        .spin-on-hover {
-            transition: transform 0.5s;
-        }
-
-        .spin-on-hover:hover {
-            transform: rotate(360deg);
-        }
-
-        .neon-glow {
-            text-shadow: 0 0 5px #FF6347, 0 0 10px #FF4500, 0 0 20px #FF6347;
-        }
-
-        .slide-in-left {
-            animation: slideInLeft 1s ease-in-out;
-        }
-
-        @keyframes slideInLeft {
-            0% { transform: translateX(-100%); opacity: 0; }
-            100% { transform: translateX(0); opacity: 1; }
-        }
-
-        .shake {
-            animation: shake 1s ease-in-out infinite;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            25% { transform: translateX(-5px); }
-            50% { transform: translateX(5px); }
-            75% { transform: translateX(-5px); }
-        }
-    </style>
+    <link rel="stylesheet" href="../css/about.css">
 </head>
 <body class="d-flex flex-column min-vh-100">
-    <!-- Header -->
-    <header class="bg-dark text-white py-3">
+    <header class="bg-dark text-white py-3 shadow-sm">
         <div class="container d-flex justify-content-between align-items-center">
             <a href="../index.php">
-                <img src="../img/logo.png" alt="Logo Sklepu" class="logo bounce spin-on-hover">
+                <img src="../img/logo.png" alt="Proteinki" class="logo" style="height: 50px;">
             </a>
-            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                <i class="fas fa-bars fa-2x shake"></i>
-            </button>
+            <nav class="navbar">
+                <a href="../index.php" class="mx-2">Strona główna</a>
+                <a href="../contact/contact.php" class="mx-2">Kontakt</a>
+                <a href="../policy/privacy.php" class="mx-2">Polityka prywatności</a>
+            </nav>
         </div>
     </header>
 
-    <!-- Offcanvas Menu -->
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-        </div>
-        <div class="offcanvas-body">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="../index.php">Strona główna</a></li>
-                <li class="nav-item"><a class="nav-link" href="../contact/contact.php">Kontakt</a></li>
-                <li class="nav-item"><a class="nav-link" href="../account/profile.php">Profil</a></li>
-                <li class="nav-item"><a class="nav-link" href="../policy/privacy.php">Polityka Prywatności</a></li>
-            </ul>
-        </div>
-    </div>
+    <section class="about-section py-5 flex-grow-1">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h1 class="display-4 fw-bold">Kim jesteśmy?</h1>
+                <p class="text-muted">Poznaj naszą historię, wartości i misję, które napędzają nas do działania.</p>
+            </div>
 
-    <!-- About Section -->
-    <section class="py-5 fade-in">
-        <div class="container shadow-lg p-5 bg-white rounded">
-            <h2 class="text-center mb-4 text-uppercase text-primary funny-text highlight neon-glow">O nas</h2>
-            <p class="text-center slide-in-left">
-                Jesteśmy liderem w sprzedaży internetowej suplementów i zdrowej żywności. Naszym celem jest dostarczanie najwyższej jakości produktów, które wspierają Twoje zdrowie i styl życia.
-            </p>
-            <p class="text-center funny-text">
-                Nasz zespół to banda pasjonatów zdrowia i fitnessu, którzy są tak nakręceni, że nawet po wypiciu zielonej herbaty myślą, że to magiczny eliksir. Ale wiesz co? To działa!
-            </p>
-            <p class="text-center highlight">
-                A konkurencja? Zjadamy ją na śniadanie – i to bez wyrzutów sumienia, bo wiemy, że nasze białko jest lepsze! 💪
-            </p>
-            <p class="text-center slide-in-left">
-                I nie, nie boimy się żadnych pozwów – nasza ekipa ma papiery z samych CHORUSZCZY! 😂
-            </p>
-            <p class="text-center">
-                Niezależnie od tego, czy chcesz wyglądać jak superbohater, czy po prostu nie chcesz sapać przy wchodzeniu po schodach – jesteśmy tu, by pomóc!
-            </p>
+            <div class="row">
+                <div class="col-md-6 mission">
+                    <h3>Nasza misja</h3>
+                    <p>Naszym głównym celem jest dostarczanie najwyższej jakości suplementów i produktów zdrowej żywności, które wspierają zdrowie, energię i witalność. Wierzymy, że zdrowy styl życia jest nie tylko kluczem do szczęścia, ale także drogą do osiągania sukcesów w każdej dziedzinie życia. Nasze produkty powstają z myślą o ludziach, którzy chcą poprawić swoją kondycję fizyczną, psychiczną i emocjonalną.</p>
+                    <p class="highlight">Dbamy o każdego klienta indywidualnie, oferując produkty, które odpowiadają na różnorodne potrzeby, od regeneracji po zwiększenie wydolności organizmu.</p>
+                </div>
+                <div class="col-md-6 values">
+                    <h3>Nasze wartości</h3>
+                    <p>Nasza działalność opiera się na trzech filarach:</p>
+                    <p><strong>Jakość</strong></br>Współpracujemy z najlepszymi producentami, aby zapewnić naszym klientom produkty spełniające najwyższe standardy.</p>
+                    <p><strong>Transparentność</strong></br> Wszystkie nasze suplementy mają szczegółowe informacje o składzie i procesie produkcji, co buduje zaufanie wśród naszych klientów.</p>
+                    <p><strong>Innowacja</strong></br> Stale poszukujemy nowych technologii i składników, aby dostarczać produkty, które naprawdę działają i przewyższają oczekiwania.</p>
+                    
+                    <p class="highlight">Jesteśmy zespołem pasjonatów, którzy chcą pomagać ludziom w osiąganiu ich celów zdrowotnych i sportowych.</p>
+                </div>
+            </div>
+
+            <div class="mt-5">
+                <h3 class="text-center text-primary co-nas-wyroznia">Co nas wyróżnia?</h3>
+                <div class="row mt-4">
+                    <div class="col-md-4 text-center">
+                        <img src="../img/jakosc.jpg" alt="Najwyższa jakość" class="rounded shadow" style="width: 100%; max-width: 300px;">
+                        <h4 class="mt-3">Najwyższa jakość</h4>
+                        <p class="text-muted">Każdy produkt przechodzi rygorystyczne testy jakościowe, aby spełniać nasze wysokie standardy.</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <img src="../img/indywidualne-podejscie.jpg" alt="Indywidualne podejście" class="rounded shadow" style="width: 100%; max-width: 300px;">
+                        <h4 class="mt-3">Indywidualne podejście</h4>
+                        <p class="text-muted">Rozumiemy, że każdy klient ma inne potrzeby, dlatego oferujemy spersonalizowane doradztwo.</p>
+                    </div>
+                    <div class="col-md-4 text-center">
+                        <img src="../img/wsparcie.jpg" alt="Wsparcie ekspertów" class="rounded shadow" style="width: 100%; max-width: 300px;">
+                        <h4 class="mt-3">Wsparcie ekspertów</h4>
+                        <p class="text-muted">Nasz zespół ekspertów zapewnia profesjonalne wsparcie i poradnictwo.</p>
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-5 mt-auto">
-        <div class="container text-center">
-            <p>&copy; 2024 Sklep z Suplementami. Wszelkie prawa zastrzeżone. Żyj zdrowo, śmiej się głośno!</p>
-            <ul class="list-inline">
-                <li class="list-inline-item"><a class="text-white" href="../policy/privacy.php">Polityka prywatności</a></li>
-                <li class="list-inline-item"><a class="text-white" href="../policy/terms.php">Regulamin sklepu</a></li>
-                <li class="list-inline-item"><a class="text-white" href="../about/about.php">O nas</a></li>
-            </ul>
-            <div class="social-icons mt-3">
-                <a href="#" class="text-white mx-2 btn-wiggle"><i class="fab fa-facebook fa-2x"></i></a>
-                <a href="#" class="text-white mx-2 btn-wiggle"><i class="fab fa-instagram fa-2x"></i></a>
-                <a href="#" class="text-white mx-2 btn-wiggle"><i class="fab fa-twitter fa-2x"></i></a>
+    <footer class="bg-dark text-white text-center py-4 mt-auto shadow-lg">
+        <div class="container">
+            <p class="mb-2">&copy; 2024 Proteinki. Wszystkie prawa zastrzeżone.</p>
+            <a href="../policy/privacy.php" class="text-white mx-2">Polityka prywatności</a>
+            <a href="../policy/terms.php" class="text-white mx-2">Regulamin</a>
+            <div class="mt-3">
+                <a href="#" class="text-white mx-2"><i class="fab fa-facebook fa-lg"></i></a>
+                <a href="#" class="text-white mx-2"><i class="fab fa-instagram fa-lg"></i></a>
+                <a href="#" class="text-white mx-2"><i class="fab fa-twitter fa-lg"></i></a>
             </div>
         </div>
     </footer>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
 </body>
 </html>
