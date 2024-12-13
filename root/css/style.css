@@ -269,28 +269,9 @@ footer .list-inline-item a:hover {
     text-transform: uppercase;
     text-align: center;
 }
-.nav-link {
-    color: white;
-   
+.mb-3{
+    font-weight: 600;
 }
-.nav-item a {
-    text-decoration: none;
-    color: white;
-    padding: 10px 20px;
-    font-size: 1rem;
-    border-radius: 25px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-    .nav-item a:hover {
-        background-color: #007bff;
-        color: #ffffff;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    }
-
-    .mb-3{
-        font-weight: 600;
-    }
 
 
 
