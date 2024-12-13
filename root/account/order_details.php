@@ -66,10 +66,10 @@ $order_products = mysqli_fetch_all($order_product_result, MYSQLI_ASSOC);
     </header>
 
     <section class="container my-5 shadow-lg p-5 bg-white rounded">
-        <h1 class="text-center mb-4 text-uppercase text-primary">Szczegóły Zamówienia</h1>
+        <h1 class="text-center mb-4 text-uppercase text-primary h-format">Szczegóły Zamówienia</h1>
         
         <div class="section">
-            <h4 class="mb-3">Dane Zamówienia</h4>
+            <h4 class="mb-3">Dane zamówienia</h4>
             <ul class="list-group">
                 <li class="list-group-item"><strong>ID Zamówienia:</strong> <?php echo htmlspecialchars($order['id']); ?></li>
                 <li class="list-group-item"><strong>Data:</strong> <?php echo htmlspecialchars($order['created_at']); ?></li>
@@ -81,7 +81,7 @@ $order_products = mysqli_fetch_all($order_product_result, MYSQLI_ASSOC);
         </div>
 
         <div class="section">
-            <h4 class="mb-3">Produkty w Zamówieniu</h4>
+            <h4 class="mb-3">Produkty w zamówieniu</h4>
             <table class="table table-bordered">
                 <thead>
                     <tr>
@@ -109,7 +109,7 @@ $order_products = mysqli_fetch_all($order_product_result, MYSQLI_ASSOC);
         </div>
 
         <div class="section text-center">
-            <a href="user_panel.php" class="btn btn-primary">Powrót do Panelu Użytkownika</a>
+            <a href="user_panel.php" class="btn btn-primary">Panel Użytkownika</a>
         </div>
     </section>
 
