@@ -75,87 +75,60 @@ if (!$con) {
     </div>
 </div>
 
-
-
 <!-- Category Section -->
 <section class="py-5">
     <div class="container">
-
 
         <!-- Filters -->
         <div class="row mb-4">
             <div class="col-md-6">
                 <input type="text" id="searchInput" class="form-control" placeholder="Szukaj produktów..." onkeyup="filterProducts()">
             </div>
-            <div class="col-md-6">
-                <select id="filterSelect" class="form-select" onchange="filterProducts()">
-                    <option value="all">Wszystkie</option>
-                    <option value="kategoria1-opcja1">Opcja 1</option>
-                    <option value="kategoria1-opcja2">Opcja 2</option>
-                    <option value="kategoria1-opcja3">Opcja 3</option>
-                </select>
-            </div>
+
         </div>
 
         <!-- Products -->
         <section id="products" class="products py-5">
             <div class="container">
                 <h2 class="text-center mb-4">Aminokwasy</h2>
-                <div class="row g-4">
+                <div class="row g-4" id="productList">
                     <?php
-                    // Połączenie z bazą danych
-                    $con = mysqli_connect("localhost", "root", "", "proteinki_db");
-                    if (!$con) {
-                        die("Błąd połączenia z bazą danych: " . mysqli_connect_error());
-                    }
-                    $category_id = 3; //id z tabeli 'categories' narazie przepisane - nie automotyczne
+                    $category_id = 3; // Przykładowe ID kategorii
                     $products_query = "
-                SELECT p.*, i.image_path 
-                FROM products p
-                LEFT JOIN imagesproduct i ON p.id = i.product_id
-                WHERE p.category_id = $category_id
-                ORDER BY p.id DESC
-            ";
+                    SELECT p.*, i.image_path 
+                    FROM products p
+                    LEFT JOIN imagesproduct i ON p.id = i.product_id
+                    WHERE p.category_id = $category_id
+                    ORDER BY p.id DESC
+                    ";
                     $products_result = mysqli_query($con, $products_query);
                     if ($products_result && mysqli_num_rows($products_result) > 0) {
                         while($product = mysqli_fetch_assoc($products_result)) {
                             $product_id = (int)$product['id'];
                             $product_name = htmlspecialchars($product['name']);
                             $product_price = number_format($product['price'], 2, ',', ' ');
-
-                            // Sprawdzamy, czy istnieje zdjęcie w bazie danych
-                            if (!empty($product['image_path'])) {
-                                // Zamieniamy dane binarne na base64
-                                $image_data = base64_encode($product['image_path']);
-                                $product_image = 'data:image/jpeg;base64,' . $image_data;
-                            } else {
-                                // Domyślny obrazek
-                                $product_image = 'img/default_product.jpg';
-                            }
+                            $product_image = !empty($product['image_path']) ? 'data:image/jpeg;base64,' . base64_encode($product['image_path']) : '../img/default_product.jpg';
 
                             echo '
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0">
-                            <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">'. $product_name .'</h5>
-                                <p class="card-text">'. $product_price .' zł</p>
-                                <a href="../products/product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
-                            </div>
-                        </div>
-                    </div>';
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0">
+                                    <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">'. $product_name .'</h5>
+                                        <p class="card-text">'. $product_price .' zł</p>
+                                        <a href="../products/product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
+                                    </div>
+                                </div>
+                            </div>';
                         }
                     } else {
                         echo '<p class="text-center">Brak dostępnych produktów.</p>';
                     }
-
-                    // Zamykanie połączenia z bazą danych
-                    mysqli_close($con);
                     ?>
                 </div>
             </div>
         </section>
-
+    </div>
 </section>
 
 <!-- Footer -->
@@ -166,6 +139,31 @@ if (!$con) {
 </footer>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-<script src="../js/filterProducts.js"></script>
+<script>
+    function filterProducts() {
+        const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+        const categoryName = document.querySelector("h2").textContent.trim(); // Pobiera nazwę kategorii z nagłówka
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "../backend/filterProducts.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                document.getElementById("productList").innerHTML = xhr.responseText;
+            } else {
+                console.error("Błąd podczas filtrowania produktów.");
+            }
+        };
+
+        xhr.send(
+            "query=" + encodeURIComponent(searchQuery) +
+            "&category_name=" + encodeURIComponent(categoryName)
+        );
+    }
+
+</script>
+
+
 </body>
 </html>
