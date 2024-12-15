@@ -5,13 +5,16 @@ include("../backend/connection.php");
 if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
+
+// Ustal nazwę kategorii na podstawie bieżącego pliku
+$current_category_name = "Witaminy i Minerały"; // Tutaj wpisz nazwę kategorii odpowiadającą temu plikowi
 ?>
 <!DOCTYPE html>
 <html lang="pl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kategoria 1 - Sklep z Suplementami</title>
+    <title><?php echo htmlspecialchars($current_category_name); ?> - Sklep z Suplementami</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <link rel="stylesheet" href="../css/style.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -45,10 +48,9 @@ if (!$con) {
                     $categories_query = "SELECT * FROM categories";
                     $categories_result = mysqli_query($con, $categories_query);
                     if ($categories_result) {
-                        while($row = mysqli_fetch_assoc($categories_result)) {
-                            $category_id = htmlspecialchars($row['id']);
+                        while ($row = mysqli_fetch_assoc($categories_result)) {
                             $category_name = htmlspecialchars($row['name']);
-                            echo '<li><a class="dropdown-item" href="'.$category_name.'.php">'.$category_name.'</a></li>';
+                            echo '<li><a class="dropdown-item" href="' . $category_name . '.php">' . $category_name . '</a></li>';
                         }
                     } else {
                         echo '<li><a class="dropdown-item disabled" href="#">Brak kategorii</a></li>';
@@ -62,7 +64,7 @@ if (!$con) {
                     <?php echo isset($user_data['username']) ? htmlspecialchars($user_data['username']) : 'Konto'; ?>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                    <?php if(isset($user_data['username'])): ?>
+                    <?php if (isset($user_data['username'])): ?>
                         <li><a class="dropdown-item" href="../backend/logout.php">Wyloguj się</a></li>
                     <?php else: ?>
                         <li><a class="dropdown-item" href="../account/login.html">Logowanie</a></li>
@@ -75,82 +77,53 @@ if (!$con) {
     </div>
 </div>
 
-
-
 <!-- Category Section -->
 <section class="py-5">
     <div class="container">
-
 
         <!-- Filters -->
         <div class="row mb-4">
             <div class="col-md-6">
                 <input type="text" id="searchInput" class="form-control" placeholder="Szukaj produktów..." onkeyup="filterProducts()">
             </div>
-            <div class="col-md-6">
-                <select id="filterSelect" class="form-select" onchange="filterProducts()">
-                    <option value="all">Wszystkie</option>
-                    <option value="kategoria1-opcja1">Opcja 1</option>
-                    <option value="kategoria1-opcja2">Opcja 2</option>
-                    <option value="kategoria1-opcja3">Opcja 3</option>
-                </select>
-            </div>
         </div>
 
         <!-- Products -->
         <section id="products" class="products py-5">
             <div class="container">
-                <h2 class="text-center mb-4">Witaminy i Minerały</h2>
-                <div class="row g-4">
+                <h2 class="text-center mb-4"><?php echo htmlspecialchars($current_category_name); ?></h2>
+                <div class="row g-4" id="productList">
                     <?php
-                    // Połączenie z bazą danych
-                    $con = mysqli_connect("localhost", "root", "", "proteinki_db");
-                    if (!$con) {
-                        die("Błąd połączenia z bazą danych: " . mysqli_connect_error());
-                    }
-                    $category_id = 6; //id z tabeli 'categories' narazie przepisane - nie automotyczne
                     $products_query = "
-                SELECT p.*, i.image_path 
-                FROM products p
-                LEFT JOIN imagesproduct i ON p.id = i.product_id
-                WHERE p.category_id = $category_id
-                ORDER BY p.id DESC
-            ";
+                    SELECT p.*, i.image_path 
+                    FROM products p
+                    LEFT JOIN imagesproduct i ON p.id = i.product_id
+                    WHERE p.category_id = (SELECT id FROM categories WHERE name = '" . mysqli_real_escape_string($con, $current_category_name) . "')
+                    ORDER BY p.id DESC
+                    ";
                     $products_result = mysqli_query($con, $products_query);
                     if ($products_result && mysqli_num_rows($products_result) > 0) {
-                        while($product = mysqli_fetch_assoc($products_result)) {
+                        while ($product = mysqli_fetch_assoc($products_result)) {
                             $product_id = (int)$product['id'];
                             $product_name = htmlspecialchars($product['name']);
                             $product_price = number_format($product['price'], 2, ',', ' ');
-
-                            // Sprawdzamy, czy istnieje zdjęcie w bazie danych
-                            if (!empty($product['image_path'])) {
-                                // Zamieniamy dane binarne na base64
-                                $image_data = base64_encode($product['image_path']);
-                                $product_image = 'data:image/jpeg;base64,' . $image_data;
-                            } else {
-                                // Domyślny obrazek
-                                $product_image = 'img/default_product.jpg';
-                            }
+                            $product_image = !empty($product['image_path']) ? 'data:image/jpeg;base64,' . base64_encode($product['image_path']) : '../img/default_product.jpg';
 
                             echo '
-                    <div class="col-md-6 col-lg-4">
-                        <div class="card h-100 shadow-sm border-0">
-                            <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
-                            <div class="card-body text-center">
-                                <h5 class="card-title">'. $product_name .'</h5>
-                                <p class="card-text">'. $product_price .' zł</p>
-                                <a href="product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
-                            </div>
-                        </div>
-                    </div>';
+                            <div class="col-md-6 col-lg-4">
+                                <div class="card h-100 shadow-sm border-0">
+                                    <img src="' . $product_image . '" class="card-img-top" alt="' . $product_name . '">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">' . $product_name . '</h5>
+                                        <p class="card-text">' . $product_price . ' zł</p>
+                                        <a href="../products/product.php?id=' . $product_id . '" class="btn btn-outline-primary">Zobacz więcej</a>
+                                    </div>
+                                </div>
+                            </div>';
                         }
                     } else {
                         echo '<p class="text-center">Brak dostępnych produktów.</p>';
                     }
-
-                    // Zamykanie połączenia z bazą danych
-                    mysqli_close($con);
                     ?>
                 </div>
             </div>
@@ -167,5 +140,29 @@ if (!$con) {
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
 <script src="../js/filterProducts.js"></script>
+<script>
+    function filterProducts() {
+        const searchQuery = document.getElementById("searchInput").value.toLowerCase();
+        const categoryName = document.querySelector("h2").textContent.trim(); // Pobiera nazwę kategorii z nagłówka
+
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "../backend/filterProducts.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onload = function () {
+            if (xhr.status === 200) {
+                document.getElementById("productList").innerHTML = xhr.responseText;
+            } else {
+                console.error("Błąd podczas filtrowania produktów.");
+            }
+        };
+
+        xhr.send(
+            "query=" + encodeURIComponent(searchQuery) +
+            "&category_name=" + encodeURIComponent(categoryName)
+        );
+    }
+
+</script>
 </body>
 </html>
