@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Split Diagonal Transitions</title>
+    <link rel="stylesheet" href="start/start-style.css">
+</head>
+<body>
+  <div class="oblique">
+    <div class="main-block-oblique skew-block">
+
+      <div class="skew-block-repeat">
+        <a href="#" id="loginLink">
+          <div class="oblique-inner">
+            <div class="image-wrapper">
+              <div class="main-image">
+                <img src="start/crossfit.jpg" class="image-img" alt="">
+              </div>
+            </div>
+          </div>
+          <div class="oblique-caption caption-top">
+            <h2>Logowanie</h2>
+            <button onclick="redirectToPage('start/login.php')">Otwórz</button>
+          </div>
+        </a>
+      </div>
+
+      <div class="skew-block-repeat">
+        <a href="#" id="homeLink">
+          <div class="oblique-inner">
+            <div class="image-wrapper">
+              <div class="main-image">
+                <img src="start/prot.jpg" class="image-img" alt="">
+              </div>
+            </div>
+          </div>
+          <div class="oblique-caption caption-top">
+            <h2>Strona Główna</h2>
+            <button onclick="redirectToPage('index.php')">Otwórz</button>
+          </div>
+        </a>
+      </div>
+
+    </div>
+  </div>
+
+  <script>
+    function redirectToPage(page) {
+      window.location.href = page;
+    }
+  </script>
+</body>
+</html>
