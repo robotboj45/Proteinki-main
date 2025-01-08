@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 include("backend/connection.php");
 
@@ -23,93 +24,159 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 
 </head>
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sklep z Suplementami</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+</head>
 <body>
-    <header class="bg-dark text-white py-3">
-        <div class="container d-flex justify-content-between align-items-center">
-            <a href="index.php"><img src="img/logo.png" alt="Logo Sklepu" class="logo"></a>
-            <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
-                <i class="fas fa-bars fa-2x"></i>
-            </button>
-        </div>
-    </header>
 
-    <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
-        <div class="offcanvas-header">
-            <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
-            <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+<!-- Header -->
+<header class="bg-dark text-white py-3">
+    <div class="container d-flex justify-content-between align-items-center">
+        <!-- Logo -->
+        <a href="index.php"><img src="img/logo.png" alt="Logo Sklepu" class="logo"></a>
+
+        <!-- Witaj w sklepie -->
+        <div class="welcome-message mx-3 d-none d-sm-block">
+            <p class="mb-0">Witaj w naszym sklepie! U nas znajdziesz wszystkie składniki zdrowej suplementacji!</p>
         </div>
-        <div class="offcanvas-body">
-            <ul class="navbar-nav">
-                <li class="nav-item"><a class="nav-link" href="index.php">Strona główna</a></li>
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Kategorie</a>
-                    <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
-                        <?php
-                        $categories_query = "SELECT * FROM categories";
-                        $categories_result = mysqli_query($con, $categories_query);
-                        if ($categories_result) {
-                            while($row = mysqli_fetch_assoc($categories_result)) {
-                                $category_id = htmlspecialchars($row['id']);
-                                $category_name = htmlspecialchars($row['name']);
-                                echo '<li><a class="dropdown-item" href="categories/'.$category_name.'.php">'.$category_name.'</a></li>';
-                            }
-                        } else {
-                            echo '<li><a class="dropdown-item disabled" href="#">Brak kategorii</a></li>';
+
+        <!-- Toggler dla nawigacji -->
+        <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+            <i class="fas fa-bars fa-2x"></i>
+        </button>
+    </div>
+</header>
+
+
+<!-- Offcanvas Menu -->
+<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+    <div class="offcanvas-header">
+        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
+        <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+        <ul class="navbar-nav">
+            <li class="nav-item"><a class="nav-link" href="index.php">Strona główna</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="categoriesDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">Kategorie</a>
+                <ul class="dropdown-menu" aria-labelledby="categoriesDropdown">
+                    <?php
+                    $categories_query = "SELECT * FROM categories";
+                    $categories_result = mysqli_query($con, $categories_query);
+                    if ($categories_result) {
+                        while($row = mysqli_fetch_assoc($categories_result)) {
+                            $category_id = htmlspecialchars($row['id']);
+                            $category_name = htmlspecialchars($row['name']);
+                            echo '<li><a class="dropdown-item" href="categories/'.$category_name.'.php">'.$category_name.'</a></li>';
                         }
-                        ?>
-                    </ul>
-                </li>
-                <li class="nav-item"><a class="nav-link" href="contact/contact.php">Kontakt</a></li>
-                <?php if ($user_group === 'admin'):?>
-                    <li class="nav-item"><a class="nav-link" href="backend/read_users.php">Admin Panel: Zarządzanie Użytkownikami</a></li>
-                    <li class="nav-item"><a class="nav-link" href="admin/manage_products.php">Admin Panel: Zarządzanie Produktami</a></li>
-                <?php endif; ?>
-                <?php if ($is_logged_in): ?>
-                    <li class="nav-item"><a class="nav-link" href="account/user_panel.php">Panel Użytkownika</a></li>
-                    <li class="nav-item"><a class="nav-link" href="backend/logout.php">Wyloguj się</a></li>
-                <?php else: ?>
-                    <li class="nav-item"><a class="nav-link" href="account/login.html">Logowanie</a></li>
-                    <li class="nav-item"><a class="nav-link" href="account/register.html">Rejestracja</a></li>
-                <?php endif; ?>
-                <li class="nav-item"><a class="nav-link" href="checkout/cart.php"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
-            </ul>
-        </div>
+                    } else {
+                        echo '<li><a class="dropdown-item disabled" href="#">Brak kategorii</a></li>';
+                    }
+                    ?>
+                </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="contact/contact.php">Kontakt</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                    <?php echo isset($user_data['username']) ? htmlspecialchars($user_data['username']) : 'Konto'; ?>
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="accountDropdown">
+                    <?php if(isset($user_data['username'])): ?>
+                        <li><a class="dropdown-item" href="account/logout.php">Wyloguj się</a></li>
+                    <?php else: ?>
+                        <li><a class="dropdown-item" href="account/login.php">Logowanie</a></li>
+                        <li><a class="dropdown-item" href="account/register.php">Rejestracja</a></li>
+                    <?php endif; ?>
+                </ul>
+            </li>
+            <li class="nav-item"><a class="nav-link" href="checkout/cart.php"><i class="fas fa-shopping-cart"></i> Koszyk</a></li>
+        </ul>
     </div>
+</div>
 
-    <section class="hero-banner text-center">
-    <div class="hero-content">
-        <h1 class="hero-title">Witamy w Sklepie z Suplementami</h1>
-    </div>
-</section>
-    <section class="slider">
-    <div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-indicators">
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
-             <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1" aria-label="Slide 2"></button>
-            <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="2" aria-label="Slide 3"></button>
-        </div>
+
+<!-- Hero Banner with Auto-Slider -->
+<section class="hero-banner">
+    <div id="customCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
         <div class="carousel-inner">
             <div class="carousel-item active">
-                <img src="img/zdjecie1.jpg" class="d-block w-100" alt="Zdjęcie 1">
+                <img src="img/slajder1.jpg" class="d-block w-100" alt="Slajder 1">
             </div>
             <div class="carousel-item">
-                <img src="img/zdjecie2.jpg" class="d-block w-100" alt="Zdjęcie 2">
+                <img src="img/slajder2.jpg" class="d-block w-100" alt="Slajder 2">
             </div>
             <div class="carousel-item">
-                <img src="img/zdjecie3.jpg" class="d-block w-100" alt="Zdjęcie 3">
+                <img src="img/slajder3.jpg" class="d-block w-100" alt="Slajder 3">
             </div>
         </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Poprzedni</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Następny</span>
-        </button>
     </div>
-    <div class="slider-button text-center mt-4">
-        <a href="#products" class="btn btn-primary btn-lg">Zobacz Nowości</a>
+    <div class="hero-content">
+        <h1>Odkryj Najlepsze Suplementy</h1>
+        <p>Twój partner w zdrowiu i kondycji. Sprawdź nasze najnowsze produkty już dziś!</p>
+        <a href="#products" class="btn btn-primary">Zobacz Produkty</a>
+    </div>
+</section>
+
+
+
+
+
+
+<!-- Features Section -->
+<section class="features text-center py-5">
+    <div class="container">
+        <h2 class="mb-4">Dlaczego warto nas wybrać?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="feature-icon"><i class="fas fa-truck"></i></div>
+                <h5>Szybka dostawa</h5>
+                <p>Zapewniamy błyskawiczną dostawę w każde miejsce w Polsce.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-icon"><i class="fas fa-star"></i></div>
+                <h5>Najwyższa jakość</h5>
+                <p>Wszystkie nasze produkty są w 100% oryginalne i certyfikowane.</p>
+            </div>
+            <div class="col-md-4">
+                <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                <h5>Zadowoleni klienci</h5>
+                <p>Tysiące pozytywnych opinii od naszych zadowolonych klientów.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Reviews Section -->
+<section class="reviews">
+    <div class="container">
+        <h2 class="text-center mb-4">Co mówią nasi klienci?</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="review p-3">
+                    <p>"Fantastyczny sklep! Produkty wysokiej jakości, a obsługa klienta jest na najwyższym poziomie!"</p>
+                    <p><strong>- Anna K.</strong></p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="review p-3">
+                    <p>"Dzięki suplementom z tego sklepu czuję się lepiej niż kiedykolwiek. Polecam każdemu!"</p>
+                    <p><strong>- Piotr M.</strong></p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="review p-3">
+                    <p>"Zawsze szybka dostawa i świetne promocje. Nigdy się nie zawiodłam."</p>
+                    <p><strong>- Ewa L.</strong></p>
+                </div>
+            </div>
+        </div>
     </div>
 </section>
 
@@ -165,8 +232,8 @@ if ($products_result && mysqli_num_rows($products_result) > 0) {
         <div class="container text-center">
             <p>&copy; 2024 Sklep z Suplementami. Wszelkie prawa zastrzeżone.</p>
             <ul class="list-inline">
-                <li class="list-inline-item"><a class="text-white" href="policy/privacy.php">Polityka prywatności</a></li>
-                <li class="list-inline-item"><a class="text-white" href="policy/terms.php">Regulamin sklepu</a></li>
+                <li class="list-inline-item"><a class="text-white" href="policy/privacy.html">Polityka prywatności</a></li>
+                <li class="list-inline-item"><a class="text-white" href="policy/terms.html">Regulamin sklepu</a></li>
                 <li class="list-inline-item"><a class="text-white" href="about/about.html">O nas</a></li>
             </ul>
             <div class="social-icons mt-3">
