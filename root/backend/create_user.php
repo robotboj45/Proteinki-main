@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
     $date = date("Y-m-d H:i:s");
 
     if (!empty($user_id) && !empty($password) && !empty($email)) {
-        $query = "INSERT INTO users (user_id, user_name, password, date, user_group, mobile, user_email) VALUES ('$user_id', '$user_name','$password', '$date', '$user_group', '$mobile', '$email')";
+        $query = "INSERT INTO users (user_id, user_name, password, mobile, user_email, user_group) VALUES ('$user_id', '$user_name','$password', '$mobile', '$email','$user_group')";
         if (mysqli_query($con, $query)) {
             echo "User created successfully!";
         } else {

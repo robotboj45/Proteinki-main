@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
                 // Ustawienie danych sesji
                 $_SESSION['user_id'] = $user_data['user_id'];
                 $_SESSION['user_email'] = $user_data['email'];
-                $_SESSION['user_name'] = $user_data['name'];
+                $_SESSION['user_name'] = $user_data['user_name'];
 
                 // Sprawdzenie roli użytkownika
                 if ($user_data['user_group'] === 'admin') {

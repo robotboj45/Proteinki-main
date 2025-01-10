@@ -34,11 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
                 // Hashowanie hasła
                 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
+                $basic_role = "user";
                 // Przygotowanie zapytania do dodania nowego użytkownika
-                $insert_sql = "INSERT INTO users (user_id, user_name, password, mobile, user_email) VALUES (?, ?, ?, ?, ?)";
+                $insert_sql = "INSERT INTO users (user_id, user_name, password, mobile, user_email, user_group) VALUES (?, ?, ?, ?, ?, ?)";
                 $insert_stmt = mysqli_prepare($con, $insert_sql);
-                mysqli_stmt_bind_param($insert_stmt, "sssss", $user_id, $user_name, $hashed_password, $mobile, $email);
+                mysqli_stmt_bind_param($insert_stmt, "ssssss", $user_id, $user_name, $hashed_password, $mobile, $email, $basic_role);
+
 
                 if (mysqli_stmt_execute($insert_stmt)) {
                     echo "<script>
@@ -68,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
 }
 ?>
 
-	
+
 ?>
 
 

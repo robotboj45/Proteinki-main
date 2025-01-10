@@ -8,8 +8,8 @@ if (!$con) {
 }
 $is_logged_in = isset($_SESSION['user_id']);
 $user_group =  $_SESSION['user_group'];
-
 $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
+
 ?>
 <!DOCTYPE html>
 <html lang="pl">
@@ -88,11 +88,16 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
                     <?php echo isset($user_data['username']) ? htmlspecialchars($user_data['username']) : 'Konto'; ?>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accountDropdown">
-                    <?php if(isset($user_data['username'])): ?>
-                        <li><a class="dropdown-item" href="account/logout.php">Wyloguj się</a></li>
+                    <?php if($user_group === "admin") { ?>
+                    <li><a class="dropdown-item" href="admin/manage_products.php">Zarządzaj produktami</a></li>
+                    <li><a class="dropdown-item" href="backend/read_users.php">Zarządzaj użytkowanikami</a></li>
+                    <?php } ?>
+                    <?php if($is_logged_in): ?>
+                        <li><a class="dropdown-item" href="account/user_panel.php">Twój Profil</a></li>
+                        <li><a class="dropdown-item" href="backend/logout.php">Wyloguj się</a></li>
                     <?php else: ?>
-                        <li><a class="dropdown-item" href="account/login.php">Logowanie</a></li>
-                        <li><a class="dropdown-item" href="account/register.php">Rejestracja</a></li>
+                        <li><a class="dropdown-item" href="account/login.html">Logowanie</a></li>
+                        <li><a class="dropdown-item" href="account/register.html">Rejestracja</a></li>
                     <?php endif; ?>
                 </ul>
             </li>
