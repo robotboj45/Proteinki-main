@@ -35,7 +35,18 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
 
 </head>
 <body>
+<!-- Dodanie elementu audio -->
+<audio id="intro-sound" src="sounds/Netflix_intro.mp3"></audio>
 
+<script>
+    // Odtwarzanie dźwięku po załadowaniu strony
+    window.addEventListener('load', () => {
+        const audioElement = document.getElementById('intro-sound');
+        audioElement.play().catch(error => {
+            console.warn('Automatyczne odtwarzanie dźwięku zostało zablokowane:', error);
+        });
+    });
+</script>
 <!-- Header -->
 <header class="bg-dark text-white py-3">
     <div class="container d-flex justify-content-between align-items-center">
