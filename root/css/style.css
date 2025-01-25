@@ -7,9 +7,13 @@
     background: black;
     z-index: 9999;
     display: block;
-    transition: opacity 1s ease-out; /* Dodanie efektu zanikania */
+  opacity: 0; /* Początkowo niewidoczne */
+    transition: opacity 1.5s ease-in; /* Efekt płynnego pojawiania się */    
+transition: opacity 1s ease-out; /* Dodanie efektu zanikania */
 }
-
+#matrix-canvas.visible {
+    opacity: 1; /* Widoczność po pojawieniu */
+}
 #matrix-canvas.hidden {
     opacity: 0;
     pointer-events: none; /* Wyłączenie interakcji po zaniku */
@@ -432,10 +436,3 @@ h2 {
     color: #e74c3c; /* Czerwony kolor dla wyróżnienia */
     font-weight: bold;
 }
-
-
-
-
-
-
-
