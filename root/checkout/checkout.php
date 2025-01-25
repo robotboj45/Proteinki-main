@@ -20,6 +20,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     $consent_data = isset($_POST['consent_data']) ? 1 : 0;
     $consent_terms = isset($_POST['consent_terms']) ? 1 : 0;
 
+    $card_number = null;
+    $expiry_date = null;
+    $cvv = null;
+
     if (empty($first_name) || empty($last_name) || empty($email) || empty($phone) || empty($voivodeship) || empty($postal_code) || empty($city) || empty($street) || empty($house_number) || empty($shipping_method) || empty($payment_method) || !$consent_data || !$consent_terms) {
         $message = "Wszystkie pola muszą być wypełnione, a zgody zaznaczone.";
     } elseif (!preg_match('/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/', $first_name) || !preg_match('/^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/', $last_name)) {
@@ -31,47 +35,72 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
     } elseif (!preg_match('/^\d{2}-\d{3}$/', $postal_code)) {
         $message = "Kod pocztowy musi mieć format XX-XXX.";
     } else {
-        $total = 0;
-        foreach ($_SESSION['cart'] as $item) {
-            $total += $item['price'] * $item['quantity'];
-        }
-        if (isset($_SESSION['discount']) && $_SESSION['discount'] > 0) {
-            $total -= $total * $_SESSION['discount'];
-        }
-        $order_query = "INSERT INTO orders (first_name, last_name, email, phone, voivodeship, postal_code, city, street, house_number, apartment_number, shipping_method, payment_method, consent_data, consent_terms, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-        $stmt = mysqli_prepare($con, $order_query);
-        mysqli_stmt_bind_param($stmt, "sssssssssssiiid", $first_name, $last_name, $email, $phone, $voivodeship, $postal_code, $city, $street, $house_number, $apartment_number, $shipping_method, $payment_method, $consent_data, $consent_terms, $total);
-        mysqli_stmt_execute($stmt);
-        $order_id = mysqli_insert_id($con);
-        foreach ($_SESSION['cart'] as $item) {
-            $item_query = "INSERT INTO order_product (order_id, product_id, product_name, price, quantity) VALUES (?, ?, ?, ?, ?)";
-            $item_stmt = mysqli_prepare($con, $item_query);
-            mysqli_stmt_bind_param($item_stmt, "iisdi", $order_id, $item['id'], $item['name'], $item['price'], $item['quantity']);
-            mysqli_stmt_execute($item_stmt);
-        }
-        if (isset($_SESSION['user_id'])) {
-            $user_id = $_SESSION['user_id'];
-            $order_users_query = "INSERT INTO order_users (user_id, order_id) VALUES (?, ?)";
-            $order_users_stmt = mysqli_prepare($con, $order_users_query);
-            if ($order_users_stmt) {
-                mysqli_stmt_bind_param($order_users_stmt, "si", $user_id, $order_id);
-                mysqli_stmt_execute($order_users_stmt);
-                mysqli_stmt_close($order_users_stmt);
+        if ($payment_method === 'karta') {
+            $card_number = trim($_POST['card_number']);
+            $expiry_date = trim($_POST['expiry_date']);
+            $cvv = trim($_POST['cvv']);
+
+            if (empty($card_number) || empty($expiry_date) || empty($cvv)) {
+                $message = "Wszystkie dane karty kredytowej muszą być wypełnione.";
+            } elseif (!preg_match('/^\d{16}$/', $card_number)) {
+                $message = "Numer karty kredytowej musi zawierać 16 cyfr.";
+            } elseif (!preg_match('/^(0[1-9]|1[0-2])\/\d{2}$/', $expiry_date)) {
+                $message = "Data ważności musi mieć format MM/YY.";
             } else {
-                $message = "Wystąpił problem z powiązaniem zamówienia z użytkownikiem.";
+                $current_year = date('y');
+                $current_month = date('m');
+                list($exp_month, $exp_year) = explode('/', $expiry_date);
+                if ($exp_year < $current_year || ($exp_year == $current_year && $exp_month < $current_month)) {
+                    $message = "Data ważności karty kredytowej jest nieprawidłowa.";
+                } elseif (!preg_match('/^\d{3}$/', $cvv)) {
+                    $message = "CVV musi zawierać 3 cyfry.";
+                }
             }
         }
-        $_SESSION['cart'] = array();
-        unset($_SESSION['discount']);
-        header("Location: order_success.php?order_id=" . $order_id);
+
+        if (empty($message)) {
+            $total = 0;
+            foreach ($_SESSION['cart'] as $item) {
+                $total += $item['price'] * $item['quantity'];
+            }
+            if (isset($_SESSION['discount']) && $_SESSION['discount'] > 0) {
+                $total -= $total * $_SESSION['discount'];
+            }
+            $order_query = "INSERT INTO orders (first_name, last_name, email, phone, voivodeship, postal_code, city, street, house_number, apartment_number, shipping_method, payment_method, consent_data, consent_terms, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            $stmt = mysqli_prepare($con, $order_query);
+            mysqli_stmt_bind_param($stmt, "sssssssssssiiid", $first_name, $last_name, $email, $phone, $voivodeship, $postal_code, $city, $street, $house_number, $apartment_number, $shipping_method, $payment_method, $consent_data, $consent_terms, $total);
+            mysqli_stmt_execute($stmt);
+            $order_id = mysqli_insert_id($con);
+            foreach ($_SESSION['cart'] as $item) {
+                $item_query = "INSERT INTO order_product (order_id, product_id, product_name, price, quantity) VALUES (?, ?, ?, ?, ?)";
+                $item_stmt = mysqli_prepare($con, $item_query);
+                mysqli_stmt_bind_param($item_stmt, "iisdi", $order_id, $item['id'], $item['name'], $item['price'], $item['quantity']);
+                mysqli_stmt_execute($item_stmt);
+            }
+            if (isset($_SESSION['user_id'])) {
+                $user_id = $_SESSION['user_id'];
+                $order_users_query = "INSERT INTO order_users (user_id, order_id) VALUES (?, ?)";
+                $order_users_stmt = mysqli_prepare($con, $order_users_query);
+                if ($order_users_stmt) {
+                    mysqli_stmt_bind_param($order_users_stmt, "si", $user_id, $order_id);
+                    mysqli_stmt_execute($order_users_stmt);
+                    mysqli_stmt_close($order_users_stmt);
+                } else {
+                    $message = "Wystąpił problem z powiązaniem zamówienia z użytkownikiem.";
+                }
+            }
+            $_SESSION['cart'] = array();
+            unset($_SESSION['discount']);
+            header("Location: order_success.php?order_id=" . $order_id);
+            exit();
+        }
+        header("Location: checkout.php" . ($message ? "?message=" . urlencode($message) : ""));
         exit();
     }
-    header("Location: checkout.php" . ($message ? "?message=" . urlencode($message) : ""));
-    exit();
-}
 
-if (isset($_GET['message'])) {
-    $message = htmlspecialchars($_GET['message']);
+    if (isset($_GET['message'])) {
+        $message = htmlspecialchars($_GET['message']);
+    }
 }
 ?>
 <!DOCTYPE html>
@@ -293,6 +322,33 @@ if (isset($_GET['message'])) {
                 </div>
             </div>
 
+            <div class="section" id="creditCardFields" style="display: none;">
+                <h4 class="mb-3">Dane karty kredytowej</h4>
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="card_number" class="form-label">Numer karty <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="card_number" name="card_number" maxlength="16">
+                        <div class="invalid-feedback">
+                            Numer karty kredytowej musi zawierać 16 cyfr.
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="expiry_date" class="form-label">Data ważności (MM/YY) <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="expiry_date" name="expiry_date" placeholder="MM/YY" maxlength="5">
+                        <div class="invalid-feedback">
+                            Data ważności musi mieć format MM/YY i być w przyszłości.
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="cvv" class="form-label">CVV <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="cvv" name="cvv" maxlength="3">
+                        <div class="invalid-feedback">
+                            CVV musi zawierać 3 cyfry.
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
             <div class="section">
                 <h4 class="mb-3">Zgody</h4>
                 <div class="form-check">
@@ -349,6 +405,21 @@ if (isset($_GET['message'])) {
             const shippingMethod = document.getElementById('shipping_method');
             const consentData = document.getElementById('consent_data');
             const consentTerms = document.getElementById('consent_terms');
+            const creditCardFields = document.getElementById('creditCardFields');
+            const cardNumber = document.getElementById('card_number');
+            const expiryDate = document.getElementById('expiry_date');
+            const cvv = document.getElementById('cvv');
+
+            function toggleCreditCardFields() {
+                if (payment_method.value === 'karta') {
+                    creditCardFields.style.display = 'block';
+                } else {
+                    creditCardFields.style.display = 'none';
+                    cardNumber.classList.remove('is-invalid');
+                    expiryDate.classList.remove('is-invalid');
+                    cvv.classList.remove('is-invalid');
+                }
+            }
 
             function validateFirstName() {
                 const regex = /^[A-ZĄĆĘŁŃÓŚŹŻ][a-ząćęłńóśźż]+$/;
@@ -465,6 +536,56 @@ if (isset($_GET['message'])) {
                 }
             }
 
+            function validateCardNumber() {
+                const regex = /^\d{16}$/;
+                if (payment_method.value === 'karta') {
+                    if (!regex.test(cardNumber.value.trim())) {
+                        cardNumber.classList.add('is-invalid');
+                        return false;
+                    } else {
+                        cardNumber.classList.remove('is-invalid');
+                        return true;
+                    }
+                }
+                return true;
+            }
+
+            function validateExpiryDate() {
+                const regex = /^(0[1-9]|1[0-2])\/\d{2}$/;
+                if (payment_method.value === 'karta') {
+                    if (!regex.test(expiryDate.value.trim())) {
+                        expiryDate.classList.add('is-invalid');
+                        return false;
+                    } else {
+                        const today = new Date();
+                        const current_year = today.getFullYear() % 100;
+                        const current_month = today.getMonth() + 1;
+                        const [exp_month, exp_year] = expiryDate.value.split('/');
+                        if (parseInt(exp_year) < current_year || (parseInt(exp_year) === current_year && parseInt(exp_month) < current_month)) {
+                            expiryDate.classList.add('is-invalid');
+                            return false;
+                        }
+                        expiryDate.classList.remove('is-invalid');
+                        return true;
+                    }
+                }
+                return true;
+            }
+
+            function validateCVV() {
+                const regex = /^\d{3}$/;
+                if (payment_method.value === 'karta') {
+                    if (!regex.test(cvv.value.trim())) {
+                        cvv.classList.add('is-invalid');
+                        return false;
+                    } else {
+                        cvv.classList.remove('is-invalid');
+                        return true;
+                    }
+                }
+                return true;
+            }
+
             firstName.addEventListener('input', validateFirstName);
             lastName.addEventListener('input', validateLastName);
             email.addEventListener('input', validateEmail);
@@ -481,8 +602,17 @@ if (isset($_GET['message'])) {
             city.addEventListener('input', validateCity);
             street.addEventListener('input', validateStreet);
             houseNumber.addEventListener('input', validateHouseNumber);
-            payment_method.addEventListener('change', validatePayment);
+            payment_method.addEventListener('change', function() {
+                validatePayment();
+                toggleCreditCardFields();
+                validateCardNumber();
+                validateExpiryDate();
+                validateCVV();
+            });
             shippingMethod.addEventListener('change', validateShippingMethod);
+            cardNumber.addEventListener('input', validateCardNumber);
+            expiryDate.addEventListener('input', validateExpiryDate);
+            cvv.addEventListener('input', validateCVV);
 
             form.addEventListener('submit', function(e) {
                 let valid = true;
@@ -497,6 +627,11 @@ if (isset($_GET['message'])) {
                 if (!validateHouseNumber()) valid = false;
                 if (!validateShippingMethod()) valid = false;
                 if (!validatePayment()) valid = false;
+                if (payment_method.value === 'karta') {
+                    if (!validateCardNumber()) valid = false;
+                    if (!validateExpiryDate()) valid = false;
+                    if (!validateCVV()) valid = false;
+                }
                 if (!consentData.checked) {
                     consentData.classList.add('is-invalid');
                     valid = false;
@@ -513,6 +648,8 @@ if (isset($_GET['message'])) {
                     e.preventDefault();
                 }
             });
+
+            toggleCreditCardFields();
         });
     </script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>

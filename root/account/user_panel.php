@@ -9,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 
 $user_id = $_SESSION['user_id'];
 
-$user_query = "SELECT * FROM users WHERE user_id = ?";
+$user_query = "SELECT user_id, user_name, user_email, mobile, user_group FROM users WHERE user_id = ?";
 $user_stmt = mysqli_prepare($con, $user_query);
 mysqli_stmt_bind_param($user_stmt, "i", $user_id);
 mysqli_stmt_execute($user_stmt);
@@ -82,7 +82,6 @@ if (!empty($order_ids)) {
                 <li class="list-group-item"><strong>Email:</strong> <?php echo htmlspecialchars($user['user_email']); ?></li>
                 <li class="list-group-item"><strong>Telefon:</strong> <?php echo htmlspecialchars($user['mobile']); ?></li>
                 <li class="list-group-item"><strong>Grupa Użytkownika:</strong> <?php echo htmlspecialchars($user['user_group']); ?></li>
-                <li class="list-group-item"><strong>Data Rejestracji:</strong> <?php echo htmlspecialchars($user['date']); ?></li>
             </ul>
         </div>
 
