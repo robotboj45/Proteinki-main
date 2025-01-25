@@ -24,6 +24,7 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+ <canvas id="matrix-canvas"></canvas>
 <audio id="intro-sound" src="sounds/Netflix_intro.mp3"></audio>
 
 <script>
@@ -44,6 +45,7 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
             <i class="fas fa-bars fa-2x"></i>
         </button>
     </div>
+    <header class="bg-dark text-white py-3">
 </header>
 
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
