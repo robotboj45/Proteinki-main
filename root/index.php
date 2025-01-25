@@ -25,7 +25,7 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
 </head>
 <body>
  <canvas id="matrix-canvas"></canvas>
-<audio id="intro-sound" src="sounds/Netflix_intro.mp3"></audio>
+<audio id="intro-sound" src="sounds/matrix.mp3"></audio>
 
 <script>
     window.addEventListener('load', () => {
