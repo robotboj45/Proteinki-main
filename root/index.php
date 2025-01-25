@@ -7,7 +7,7 @@ if (!$con) {
     die("Connection failed: " . mysqli_connect_error());
 }
 $is_logged_in = isset($_SESSION['user_id']);
-$user_group =  $_SESSION['user_group'];
+$user_group = $_SESSION['user_group'] ?? 'guest';
 $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
 
 ?>
@@ -22,24 +22,11 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
-
-</head>
-<!DOCTYPE html>
-<html lang="pl">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sklep z Suplementami</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-
 </head>
 <body>
-<!-- Dodanie elementu audio -->
 <audio id="intro-sound" src="sounds/Netflix_intro.mp3"></audio>
 
 <script>
-    // Odtwarzanie dźwięku po załadowaniu strony
     window.addEventListener('load', () => {
         const audioElement = document.getElementById('intro-sound');
         audioElement.play().catch(error => {
@@ -47,26 +34,18 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
         });
     });
 </script>
-<!-- Header -->
 <header class="bg-dark text-white py-3">
     <div class="container d-flex justify-content-between align-items-center">
-        <!-- Logo -->
         <a href="index.php"><img src="img/logo.png" alt="Logo Sklepu" class="logo"></a>
-
-        <!-- Witaj w sklepie -->
         <div class="welcome-message mx-3 d-none d-sm-block">
             <p class="mb-0">Witaj w naszym sklepie! U nas znajdziesz wszystkie składniki zdrowej suplementacji!</p>
         </div>
-
-        <!-- Toggler dla nawigacji -->
         <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <i class="fas fa-bars fa-2x"></i>
         </button>
     </div>
 </header>
 
-
-<!-- Offcanvas Menu -->
 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasNavbarLabel">Menu</h5>
@@ -96,12 +75,12 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
             <li class="nav-item"><a class="nav-link" href="contact/contact.php">Kontakt</a></li>
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="accountDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    <?php echo isset($user_data['username']) ? htmlspecialchars($user_data['username']) : 'Konto'; ?>
+                    <?php echo isset($username) ? $username : 'Konto'; ?>
                 </a>
                 <ul class="dropdown-menu" aria-labelledby="accountDropdown">
                     <?php if($user_group === "admin") { ?>
                     <li><a class="dropdown-item" href="admin/manage_products.php">Zarządzaj produktami</a></li>
-                    <li><a class="dropdown-item" href="backend/read_users.php">Zarządzaj użytkowanikami</a></li>
+                    <li><a class="dropdown-item" href="backend/read_users.php">Zarządzaj użytkownikami</a></li>
                     <?php } ?>
                     <?php if($is_logged_in): ?>
                         <li><a class="dropdown-item" href="account/user_panel.php">Twój Profil</a></li>
@@ -117,8 +96,6 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
     </div>
 </div>
 
-
-<!-- Hero Banner with Auto-Slider -->
 <section class="hero-banner">
     <div id="customCarousel" class="carousel slide" data-bs-ride="carousel" data-bs-interval="3000">
         <div class="carousel-inner">
@@ -140,12 +117,6 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
     </div>
 </section>
 
-
-
-
-
-
-<!-- Features Section -->
 <section class="features text-center py-5">
     <div class="container">
         <h2 class="mb-4">Dlaczego warto nas wybrać?</h2>
@@ -169,7 +140,6 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
     </div>
 </section>
 
-<!-- Reviews Section -->
 <section class="reviews">
     <div class="container">
         <h2 class="text-center mb-4">Co mówią nasi klienci?</h2>
@@ -196,72 +166,68 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
     </div>
 </section>
 
-
-<!-- Products -->
 <section id="products" class="products py-5">
     <div class="container">
         <h2 class="text-center mb-4">Nowości</h2>
         <div class="row g-4">
             <?php
-           $products_query = "SELECT * FROM products ORDER BY id DESC";
-$products_result = mysqli_query($con, $products_query);
-if ($products_result && mysqli_num_rows($products_result) > 0) {
-    while($product = mysqli_fetch_assoc($products_result)) {
-        $product_id = (int)$product['id'];
-        $product_name = htmlspecialchars($product['name']);
-        $product_price = number_format($product['price'], 2, ',', ' ');
+            $products_query = "SELECT * FROM products ORDER BY id DESC";
+            $products_result = mysqli_query($con, $products_query);
+            if ($products_result && mysqli_num_rows($products_result) > 0) {
+                while($product = mysqli_fetch_assoc($products_result)) {
+                    $product_id = (int)$product['id'];
+                    $product_name = htmlspecialchars($product['name']);
+                    $product_price = number_format($product['price'], 2, ',', ' ');
 
-        if (!empty($product['image_path'])) {
-            // Konwersja danych binarnych na obrazek
-            $product_image = 'data:image/jpeg;base64,' . base64_encode($product['image_path']);
-        } else {
-            // Użycie domyślnego obrazka w przypadku braku
-            $product_image = 'img/default_product.jpg';
-        }
+                    if (!empty($product['image_path'])) {
+                        $product_image = 'data:image/jpeg;base64,' . base64_encode($product['image_path']);
+                    } else {
+                        $product_image = 'img/default_product.jpg';
+                    }
 
-        echo '
-        <div class="col-md-6 col-lg-4">
-            <div class="card h-100 shadow-sm border-0">
-                <a href="products/product.php?id='. $product_id .'">
-                    <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
-                </a>
-                <div class="card-body text-center">
-                    <h5 class="card-title">
-                        <a href="products/product.php?id='. $product_id .'" class="text-dark text-decoration-none">'. $product_name .'</a>
-                    </h5>
-                    <p class="card-text">'. $product_price .' zł</p>
-                    <a href="products/product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
-                </div>
-            </div>
-        </div>';
-    }
-} else {
-    echo '<p class="text-center">Brak dostępnych produktów.</p>';
-}
+                    echo '
+                    <div class="col-md-6 col-lg-4">
+                        <div class="card h-100 shadow-sm border-0">
+                            <a href="products/product.php?id='. $product_id .'">
+                                <img src="'. $product_image .'" class="card-img-top" alt="'. $product_name .'">
+                            </a>
+                            <div class="card-body text-center">
+                                <h5 class="card-title">
+                                    <a href="products/product.php?id='. $product_id .'" class="text-dark text-decoration-none">'. $product_name .'</a>
+                                </h5>
+                                <p class="card-text">'. $product_price .' zł</p>
+                                <a href="products/product.php?id='. $product_id .'" class="btn btn-outline-primary">Zobacz więcej</a>
+                            </div>
+                        </div>
+                    </div>';
+                }
+            } else {
+                echo '<p class="text-center">Brak dostępnych produktów.</p>';
+            }
             mysqli_close($con);
             ?>
         </div>
     </div>
 </section>
 
-    <footer class="bg-dark text-white py-5">
-        <div class="container text-center">
-            <p>&copy; 2024 Sklep z Suplementami. Wszelkie prawa zastrzeżone.</p>
-            <ul class="list-inline">
-                <li class="list-inline-item"><a class="text-white" href="policy/privacy.html">Polityka prywatności</a></li>
-                <li class="list-inline-item"><a class="text-white" href="policy/terms.html">Regulamin sklepu</a></li>
-                <li class="list-inline-item"><a class="text-white" href="about/about.html">O nas</a></li>
-            </ul>
-            <div class="social-icons mt-3">
-                <a href="#" class="text-white mx-2"><i class="fab fa-facebook fa-2x"></i></a>
-                <a href="#" class="text-white mx-2"><i class="fab fa-instagram fa-2x"></i></a>
-                <a href="#" class="text-white mx-2"><i class="fab fa-twitter fa-2x"></i></a>
-            </div>
+<footer class="bg-dark text-white py-5">
+    <div class="container text-center">
+        <p>&copy; 2024 Sklep z Suplementami. Wszelkie prawa zastrzeżone.</p>
+        <ul class="list-inline">
+            <li class="list-inline-item"><a class="text-white" href="policy/privacy.html">Polityka prywatności</a></li>
+            <li class="list-inline-item"><a class="text-white" href="policy/terms.html">Regulamin sklepu</a></li>
+            <li class="list-inline-item"><a class="text-white" href="about/about.html">O nas</a></li>
+        </ul>
+        <div class="social-icons mt-3">
+            <a href="#" class="text-white mx-2"><i class="fab fa-facebook fa-2x"></i></a>
+            <a href="#" class="text-white mx-2"><i class="fab fa-instagram fa-2x"></i></a>
+            <a href="#" class="text-white mx-2"><i class="fab fa-twitter fa-2x"></i></a>
         </div>
-    </footer>
+    </div>
+</footer>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
-    <script src="js/main.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+<script src="js/main.js"></script>
 </body>
 </html>

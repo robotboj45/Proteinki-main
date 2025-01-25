@@ -46,46 +46,48 @@ if (isset($_GET['action']) && $_GET['action'] == 'remove' && isset($_GET['id']))
     exit();
 }
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['id'], $_POST['quantity'])) {
-    $product_id = (int)$_POST['id'];
-    $quantity = max(1, (int)$_POST['quantity']);
-
-    if (isset($_SESSION['cart'][$product_id])) {
-        $_SESSION['cart'][$product_id]['quantity'] = $quantity;
-    }
-
-    $subtotal = $_SESSION['cart'][$product_id]['price'] * $quantity;
-    $total = 0;
-    foreach ($_SESSION['cart'] as $item) {
-        $total += $item['price'] * $item['quantity'];
-    }
-
-    if (isset($_SESSION['discount']) && $_SESSION['discount'] > 0) {
-        $total -= $total * $_SESSION['discount'];
-    }
-
-    echo json_encode([
-        'subtotal' => number_format($subtotal, 2, ',', ' '),
-        'total' => number_format($total, 2, ',', ' ')
-    ]);
-    exit();
-}
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    if (isset($_POST['discount_code']) && $_POST['discount_code'] === 'rabat') {
-        $_SESSION['discount'] = 0.1;
-        $message = "Kod rabatowy zastosowany! Zniżka 10%";
+    if (isset($_POST['id'], $_POST['quantity'])) {
+        $product_id = (int)$_POST['id'];
+        $quantity = max(1, (int)$_POST['quantity']);
+
+        if (isset($_SESSION['cart'][$product_id])) {
+            $_SESSION['cart'][$product_id]['quantity'] = $quantity;
+        }
+
+        $subtotal = $_SESSION['cart'][$product_id]['price'] * $quantity;
+        $total = 0;
+        foreach ($_SESSION['cart'] as $item) {
+            $total += $item['price'] * $item['quantity'];
+        }
+
+        if (isset($_SESSION['discount']) && $_SESSION['discount'] > 0) {
+            $total -= $total * $_SESSION['discount'];
+        }
+
+        echo json_encode([
+            'subtotal' => number_format($subtotal, 2, ',', ' '),
+            'total' => number_format($total, 2, ',', ' ')
+        ]);
+        exit();
     }
 
-    header("Location: cart.php" . ($message ? "?message=" . urlencode($message) : ""));
-    exit();
+    if (isset($_POST['discount_code'])) {
+        if (strtolower($_POST['discount_code']) === 'rabat10') {
+            $_SESSION['discount'] = 0.1;
+            $message = "Kod rabatowy zastosowany! Zniżka 10%";
+        } else {
+            $message = "Nieprawidłowy kod rabatowy.";
+        }
+        header("Location: cart.php" . ($message ? "?message=" . urlencode($message) : ""));
+        exit();
+    }
 }
 
 if (isset($_GET['message'])) {
     $message = htmlspecialchars($_GET['message']);
 }
 ?>
-
 <!DOCTYPE html>
 <html lang="pl">
 <head>
@@ -121,12 +123,14 @@ if (isset($_GET['message'])) {
 </header>
 
 <section class="container my-5 shadow-lg p-5 bg-white rounded">
+    <div class="mb-4 text-center bg-danger text-white p-2 rounded">
+        Skorzystaj z kodu rabatowego "Rabat10", by uzyskać rabat 10%
+    </div>
     <h1 class="text-center mb-4 text-uppercase text-primary">Twój koszyk</h1>
 
     <?php if ($message): ?>
-        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+        <div class="alert alert-danger" role="alert">
             <?php echo $message; ?>
-            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
         </div>
     <?php endif; ?>
 
@@ -160,6 +164,17 @@ if (isset($_GET['message'])) {
                     </td>
                 </tr>
             <?php endforeach; ?>
+
+            <tr>
+                <td colspan="5">
+                    <form method="post" class="mb-3">
+                        <div class="input-group">
+                            <input type="text" name="discount_code" id="rabatText" class="form-control" placeholder="Wprowadź kod rabatowy" value="<?php echo isset($_SESSION['discount']) && $_SESSION['discount'] > 0 ? 'Rabat10' : ''; ?>" <?php echo isset($_SESSION['discount']) && $_SESSION['discount'] > 0 ? 'disabled' : ''; ?>>
+                            <button type="submit" class="btn btn-primary" <?php echo isset($_SESSION['discount']) && $_SESSION['discount'] > 0 ? 'disabled' : ''; ?>>Zastosuj</button>
+                        </div>
+                    </form>
+                </td>
+            </tr>
 
             <?php
             if (isset($_SESSION['discount']) && $_SESSION['discount'] > 0) {

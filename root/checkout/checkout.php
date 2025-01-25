@@ -5,7 +5,6 @@ include("../backend/connection.php");
 $message = "";
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
-    // Pobranie danych z formularza
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);
     $email = trim($_POST['email']);
@@ -36,6 +35,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
         foreach ($_SESSION['cart'] as $item) {
             $total += $item['price'] * $item['quantity'];
         }
+        if (isset($_SESSION['discount']) && $_SESSION['discount'] > 0) {
+            $total -= $total * $_SESSION['discount'];
+        }
         $order_query = "INSERT INTO orders (first_name, last_name, email, phone, voivodeship, postal_code, city, street, house_number, apartment_number, shipping_method, payment_method, consent_data, consent_terms, total) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         $stmt = mysqli_prepare($con, $order_query);
         mysqli_stmt_bind_param($stmt, "sssssssssssiiid", $first_name, $last_name, $email, $phone, $voivodeship, $postal_code, $city, $street, $house_number, $apartment_number, $shipping_method, $payment_method, $consent_data, $consent_terms, $total);
@@ -60,6 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['place_order'])) {
             }
         }
         $_SESSION['cart'] = array();
+        unset($_SESSION['discount']);
         header("Location: order_success.php?order_id=" . $order_id);
         exit();
     }
@@ -149,6 +152,12 @@ if (isset($_GET['message'])) {
                             <td><?php echo number_format($subtotal, 2, ',', ' '); ?> zł</td>
                         </tr>
                         <?php endforeach; ?>
+                        <?php
+                        if (isset($_SESSION['discount']) && $_SESSION['discount'] > 0) {
+                            $discount_amount = $total * $_SESSION['discount'];
+                            $total -= $discount_amount;
+                        }
+                        ?>
                         <tr>
                             <td colspan="3" class="text-end fw-bold">Suma całkowita</td>
                             <td class="fw-bold"><?php echo number_format($total, 2, ',', ' '); ?> zł</td>
@@ -284,7 +293,6 @@ if (isset($_GET['message'])) {
                 </div>
             </div>
 
-            
             <div class="section">
                 <h4 class="mb-3">Zgody</h4>
                 <div class="form-check">
