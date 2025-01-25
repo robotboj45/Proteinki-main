@@ -51,7 +51,10 @@ document.addEventListener("DOMContentLoaded", () => {
             drops[x]++;
         });
     }
-
+// Dodanie klasy do płynnego pojawiania się
+    setTimeout(() => {
+        canvas.classList.add('visible'); // Płynne pojawienie się
+    }, 50); // Opóźnienie dla płynnego efektu (możesz dostosować)
     // Animacja Matrixa
     const interval = setInterval(draw, 50);
 
@@ -61,6 +64,6 @@ document.addEventListener("DOMContentLoaded", () => {
         clearInterval(interval);   // Zatrzymanie animacji
         setTimeout(() => {
             canvas.classList.add('hidden'); // Ukrycie canvasu po zaniku
-        }, 1000); // Czas trwania zanikania (1 sekunda)
-    }, 5000);
+        }, 1600); // Czas trwania zanikania (1 sekunda)
+    }, 15000);
 });
