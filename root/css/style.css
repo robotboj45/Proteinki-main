@@ -10,16 +10,28 @@
     opacity: 0; /* Początkowo niewidoczne */
     transition: opacity 1.5s ease-in; /* Efekt płynnego pojawiania się */
     transition: opacity 1s ease-out; /* Dodanie efektu zanikania */
+    animation: show-hide 5s ease-in-out forwards;
+    pointer-events: none;
+}
+@keyframes show-hide {
+    0% {
+        opacity: 0; /* Niewidoczne na początku */
+    }
+
+    10% {
+        opacity: 1; /* Pojawienie się */
+    }
+
+    90% {
+        opacity: 1; /* Widoczne przez większość czasu */
+    }
+
+    100% {
+        opacity: 0; /* Zanikanie na końcu */
+    }
 }
 
-    #matrix-canvas.visible {
-        opacity: 1; /* Widoczność po pojawieniu */
-    }
-
-    #matrix-canvas.hidden {
-        opacity: 0;
-        pointer-events: none; /* Wyłączenie interakcji po zaniku */
-    }
+   
 /* Global Styles */
 body {
     font-family: 'Arial Rounded MT', sans-serif;
