@@ -101,7 +101,7 @@ if (isset($_GET['message'])) {
 <header class="bg-dark text-white py-3">
     <div class="container d-flex justify-content-between align-items-center">
         <a href="../index.php">
-            <img src="../img/logo.png" alt="Logo Sklepu" class="logo">
+            <img src="../img/logo.png" alt="Logo Sklepu" class="logo" style="width: 15%;">
         </a>
         <nav>
             <ul class="nav">
