@@ -7,26 +7,29 @@
     background: black;
     z-index: 9999;
     display: block;
-  opacity: 0; /* Początkowo niewidoczne */
-    transition: opacity 1.5s ease-in; /* Efekt płynnego pojawiania się */    
-transition: opacity 1s ease-out; /* Dodanie efektu zanikania */
+    opacity: 0; /* Początkowo niewidoczne */
+    transition: opacity 1.5s ease-in; /* Efekt płynnego pojawiania się */
+    transition: opacity 1s ease-out; /* Dodanie efektu zanikania */
 }
-#matrix-canvas.visible {
-    opacity: 1; /* Widoczność po pojawieniu */
-}
-#matrix-canvas.hidden {
-    opacity: 0;
-    pointer-events: none; /* Wyłączenie interakcji po zaniku */
-}
+
+    #matrix-canvas.visible {
+        opacity: 1; /* Widoczność po pojawieniu */
+    }
+
+    #matrix-canvas.hidden {
+        opacity: 0;
+        pointer-events: none; /* Wyłączenie interakcji po zaniku */
+    }
 
 /* Global Styles */
 body {
-    font-family: 'Poppins', sans-serif;
+    font-family: 'Arial Rounded MT', sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f5f5f5;
     color: #333;
 }
+
 
 .header-container {
     padding: 10px;
@@ -292,6 +295,21 @@ footer .list-inline-item a:hover {
     font-weight: 600;
 }
 
+.mb-0{
+    font-size: 20px;
+    text-align: center;
+}
+
+.col-md-4 p {
+    color: dimgrey;
+}
+.col-md-4 H5 {
+    color: #007bff;
+}
+
+#products h2 {
+    color: #f5f5f5;
+}
 /* Styl dla zawartości Hero - treść wyświetlana na slajderze */
 .hero-content {
     position: absolute;
@@ -307,6 +325,7 @@ footer .list-inline-item a:hover {
 }
 
 .hero-content h1 {
+    font-family: 'Arial Rounded MT',sans-serif;
     font-size: 2rem;
     font-weight: bold;
     margin-bottom: 20px;
@@ -314,12 +333,14 @@ footer .list-inline-item a:hover {
 }
 
 .hero-content p {
+    font-family: "Arial Rounded MT", sans-serif;
     font-size: 1.25rem;
     margin-bottom: 30px;
     color: #ddd;
 }
 
 .hero-content .btn-primary {
+    font-family: 'Arial Rounded MT',sans-serif;
     font-size: 1.1rem;
     padding: 12px 25px;
     background-color: #007bff;
@@ -399,7 +420,7 @@ footer .list-inline-item a:hover {
 
 .features .feature-icon {
     font-size: 3rem;
-    color: #007bff;
+    color: #007bff; 
     margin-bottom: 15px;
 }
 
