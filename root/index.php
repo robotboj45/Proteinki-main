@@ -39,7 +39,8 @@ $username = $is_logged_in ? htmlspecialchars($_SESSION['user_name']) : null;
     <div class="container d-flex justify-content-between align-items-center">
         <a href="index.php"><img src="img/logo.png" alt="Logo Sklepu" class="logo"></a>
         <div class="welcome-message mx-3 d-none d-sm-block">
-            <p class="mb-0">Witaj w naszym sklepie! U nas znajdziesz wszystkie składniki zdrowej suplementacji!</p>
+            <p class="mb-0">Witaj w naszym sklepie!</p>
+            <p class="mb-0">U nas znajdziesz wszystkie składniki zdrowej suplementacji!</p>
         </div>
         <button class="navbar-toggler text-white border-0" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
             <i class="fas fa-bars fa-2x"></i>
