@@ -6,20 +6,28 @@
     height: 100%;
     background: black;
     z-index: 9999;
-    display: block;
-    opacity: 0; /* Początkowo niewidoczne */
-    transition: opacity 1.5s ease-in; /* Efekt płynnego pojawiania się */
-    transition: opacity 1s ease-out; /* Dodanie efektu zanikania */
+    opacity: 0; 
+    animation: show-hide 9s ease-in-out forwards; 
 }
 
-    #matrix-canvas.visible {
-        opacity: 1; /* Widoczność po pojawieniu */
+
+@keyframes show-hide {
+    0% {
+        opacity: 0; /* Niewidoczne na początku */
     }
 
-    #matrix-canvas.hidden {
-        opacity: 0;
-        pointer-events: none; /* Wyłączenie interakcji po zaniku */
+    10% {
+        opacity: 1; /* Pojawienie się */
     }
+
+    90% {
+        opacity: 1; /* Widoczne przez większość czasu */
+    }
+
+    100% {
+        opacity: 0; /* Zanikanie na końcu */
+    }
+}
 
 /* Global Styles */
 body {
